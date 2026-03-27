@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>12 Leverage Points -- Interactive Staircase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf8f5;
+    --warm-white: #f5f0eb;
+    --blush-light: #faf3ef;
+    --rose: #c9828e;
+    --rose-deep: #a8636f;
+    --rose-muted: #d4a0a7;
+    --sage: #8baa8e;
+    --sage-deep: #5e7d61;
+    --sage-light: #e8f0e8;
+    --lavender: #b8a9d4;
+    --lavender-deep: #8b7ab5;
+    --lavender-light: #f0ecf7;
+    --mauve: #c4a7b5;
+    --mauve-deep: #9e7a8e;
+    --gold: #c9a96e;
+    --gold-deep: #a8864d;
+    --gold-light: #f7f0e3;
+    --terracotta: #c4897a;
+    --terracotta-deep: #a86b5c;
+    --ink: #2d2a26;
+    --ink-light: #5a5650;
+    --ink-muted: #8a8580;
+    --ink-faint: #b5b0aa;
+    --border: rgba(45, 42, 38, 0.08);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  .page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 48px 100px;
+  }
+
+  .back-link {
+    display: inline-block;
+    font-size: 0.75rem;
+    color: var(--rose-deep);
+    text-decoration: none;
+    margin-bottom: 48px;
+    letter-spacing: 0.02em;
+    transition: color 0.2s;
+  }
+  .back-link:hover { color: var(--rose); }
+
+  .title-block {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  .title-block h1 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 2.4rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.2;
+  }
+  .title-block .subtitle {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.05rem;
+    color: var(--ink-muted);
+    font-style: italic;
+    margin-top: 8px;
+  }
+  .title-block .rule {
+    width: 56px;
+    height: 1px;
+    background: var(--rose-muted);
+    margin: 18px auto 0;
+  }
+
+  .legend {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    margin: 36px 0 12px;
+    flex-wrap: wrap;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.72rem;
+    color: var(--ink-light);
+  }
+  .legend-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+  }
+
+  .depth-label {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  .depth-label span {
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+  }
+
+  /* ─── Staircase ─── */
+  .staircase {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 4px;
+    padding: 0 12px;
+    min-height: 520px;
+  }
+
+  .step-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+    max-width: 86px;
+  }
+
+  .step-card {
+    width: 100%;
+    border-radius: 8px 8px 0 0;
+    text-align: center;
+    padding: 14px 6px 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .step-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  }
+  .step-card.active {
+    transform: translateY(-6px);
+    box-shadow: 0 8px 28px rgba(0,0,0,0.1);
+  }
+
+  .step-num {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1;
+    margin-bottom: 6px;
+  }
+  .step-icon { font-size: 1.4rem; margin-bottom: 6px; line-height: 1; }
+  .step-label { font-size: 0.58rem; font-weight: 500; line-height: 1.3; letter-spacing: 0.01em; }
+
+  .cluster-params .step-card { background: rgba(201,169,110,0.12); border: 1.5px solid rgba(201,169,110,0.3); border-bottom: none; }
+  .cluster-params .step-num { color: var(--gold-deep); }
+  .cluster-params .step-label { color: var(--gold-deep); }
+  .cluster-feedback .step-card { background: rgba(184,169,212,0.12); border: 1.5px solid rgba(184,169,212,0.3); border-bottom: none; }
+  .cluster-feedback .step-num { color: var(--lavender-deep); }
+  .cluster-feedback .step-label { color: var(--lavender-deep); }
+  .cluster-design .step-card { background: rgba(139,170,142,0.12); border: 1.5px solid rgba(139,170,142,0.3); border-bottom: none; }
+  .cluster-design .step-num { color: var(--sage-deep); }
+  .cluster-design .step-label { color: var(--sage-deep); }
+  .cluster-intent .step-card { background: rgba(201,130,142,0.14); border: 1.5px solid rgba(201,130,142,0.3); border-bottom: none; }
+  .cluster-intent .step-num { color: var(--rose-deep); }
+  .cluster-intent .step-label { color: var(--rose-deep); }
+
+  .cluster-params .step-card.active { background: rgba(201,169,110,0.22); border-color: var(--gold); }
+  .cluster-feedback .step-card.active { background: rgba(184,169,212,0.22); border-color: var(--lavender); }
+  .cluster-design .step-card.active { background: rgba(139,170,142,0.22); border-color: var(--sage); }
+  .cluster-intent .step-card.active { background: rgba(201,130,142,0.24); border-color: var(--rose); }
+
+  .step-col:nth-child(1)  .step-card { min-height:  80px; }
+  .step-col:nth-child(2)  .step-card { min-height: 105px; }
+  .step-col:nth-child(3)  .step-card { min-height: 130px; }
+  .step-col:nth-child(4)  .step-card { min-height: 155px; }
+  .step-col:nth-child(5)  .step-card { min-height: 180px; }
+  .step-col:nth-child(6)  .step-card { min-height: 205px; }
+  .step-col:nth-child(7)  .step-card { min-height: 230px; }
+  .step-col:nth-child(8)  .step-card { min-height: 255px; }
+  .step-col:nth-child(9)  .step-card { min-height: 280px; }
+  .step-col:nth-child(10) .step-card { min-height: 305px; }
+  .step-col:nth-child(11) .step-card { min-height: 330px; }
+  .step-col:nth-child(12) .step-card { min-height: 355px; }
+
+  /* ─── Annotations ─── */
+  .annotations {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+    padding: 0 4px;
+  }
+  .anno {
+    text-align: center;
+    padding: 14px 16px;
+    border-radius: 8px;
+    font-size: 0.66rem;
+    font-weight: 500;
+    line-height: 1.4;
+  }
+  .anno-shallow {
+    background: rgba(201,169,110,0.1);
+    border: 1px solid rgba(201,169,110,0.25);
+    color: var(--gold-deep);
+  }
+  .anno-deep {
+    background: rgba(201,130,142,0.1);
+    border: 1px solid rgba(201,130,142,0.25);
+    color: var(--rose-deep);
+  }
+  .anno-arrow {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+  }
+  .anno-arrow-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--gold), var(--rose));
+    position: relative;
+  }
+  .anno-arrow-line::after {
+    content: '';
+    position: absolute;
+    right: -1px;
+    top: -4px;
+    border: 4px solid transparent;
+    border-left: 6px solid var(--rose);
+  }
+  .anno-arrow-text {
+    font-size: 0.6rem;
+    color: var(--ink-faint);
+    font-style: italic;
+    padding: 0 12px;
+    white-space: nowrap;
+  }
+
+  /* ─── Detail panel ─── */
+  .detail-panel {
+    margin-top: 48px;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 36px 40px;
+    min-height: 160px;
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  .detail-panel.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .detail-header {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 6px;
+  }
+  .detail-num {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 2rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .detail-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+  }
+  .detail-cluster {
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .detail-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .detail-desc {
+    font-size: 0.82rem;
+    color: var(--ink-light);
+    line-height: 1.65;
+  }
+  .detail-example {
+    background: var(--warm-white);
+    border-radius: 8px;
+    padding: 18px 20px;
+  }
+  .detail-example-label {
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 6px;
+  }
+  .detail-example p {
+    font-size: 0.78rem;
+    color: var(--ink-light);
+    line-height: 1.55;
+  }
+  .detail-thesis {
+    grid-column: span 2;
+    background: linear-gradient(135deg, #f2e4dc, #f0ecf7);
+    border: 1px solid rgba(201,130,142,0.18);
+    border-radius: 8px;
+    padding: 16px 20px;
+    font-size: 0.78rem;
+    color: var(--ink-light);
+    line-height: 1.55;
+  }
+  .detail-thesis-label {
+    color: var(--rose-deep);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .detail-prompt {
+    text-align: center;
+    color: var(--ink-faint);
+    font-size: 0.82rem;
+    font-style: italic;
+    padding: 32px 0;
+  }
+
+  .source {
+    text-align: center;
+    margin-top: 40px;
+    font-size: 0.68rem;
+    color: var(--ink-faint);
+    font-style: italic;
+  }
+
+  @media (max-width: 900px) {
+    .page { padding: 40px 20px 80px; }
+    .staircase { gap: 2px; }
+    .step-label { font-size: 0.5rem; }
+    .step-icon { font-size: 1.1rem; }
+    .step-card { padding: 10px 4px 12px; }
+    .detail-body { grid-template-columns: 1fr; }
+    .detail-thesis { grid-column: span 1; }
+  }
+  @media (max-width: 600px) {
+    .staircase { flex-wrap: wrap; align-items: stretch; min-height: auto; }
+    .step-col { max-width: none; flex: 0 0 calc(25% - 4px); }
+    .step-col .step-card { min-height: auto !important; }
+    .legend { gap: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <a href="index.html" class="back-link">&larr; Back to Thesis Architecture</a>
+
+  <div class="title-block">
+    <h1>12 Leverage Points</h1>
+    <p class="subtitle">Places to Intervene in a System (Meadows, 1999)</p>
+    <div class="rule"></div>
+  </div>
+
+  <div class="legend">
+    <div class="legend-item"><span class="legend-dot" style="background:var(--gold)"></span> Parameters</div>
+    <div class="legend-item"><span class="legend-dot" style="background:var(--lavender)"></span> Feedback</div>
+    <div class="legend-item"><span class="legend-dot" style="background:var(--sage)"></span> Design</div>
+    <div class="legend-item"><span class="legend-dot" style="background:var(--rose)"></span> Intent</div>
+  </div>
+
+  <div class="depth-label">
+    <span>Shallow &nbsp;&nbsp;&rarr;&nbsp;&nbsp; Increasing leverage &nbsp;&nbsp;&rarr;&nbsp;&nbsp; Deep</span>
+  </div>
+
+  <!-- STAIRCASE -->
+  <div class="staircase" id="staircase">
+    <div class="step-col cluster-params"><div class="step-card" data-index="0"><div class="step-num">12</div><div class="step-icon">&#9881;</div><div class="step-label">Constants &amp; parameters</div></div></div>
+    <div class="step-col cluster-params"><div class="step-card" data-index="1"><div class="step-num">11</div><div class="step-icon">&#9638;</div><div class="step-label">Buffer sizes</div></div></div>
+    <div class="step-col cluster-params"><div class="step-card" data-index="2"><div class="step-num">10</div><div class="step-icon">&#9650;</div><div class="step-label">Material stocks &amp; flows</div></div></div>
+    <div class="step-col cluster-feedback"><div class="step-card" data-index="3"><div class="step-num">9</div><div class="step-icon">&#8987;</div><div class="step-label">Delays</div></div></div>
+    <div class="step-col cluster-feedback"><div class="step-card" data-index="4"><div class="step-num">8</div><div class="step-icon">&#8644;</div><div class="step-label">Balancing feedback loops</div></div></div>
+    <div class="step-col cluster-feedback"><div class="step-card" data-index="5"><div class="step-num">7</div><div class="step-icon">&#10548;</div><div class="step-label">Reinforcing feedback loops</div></div></div>
+    <div class="step-col cluster-feedback"><div class="step-card" data-index="6"><div class="step-num">6</div><div class="step-icon">&#9673;</div><div class="step-label">Information flows</div></div></div>
+    <div class="step-col cluster-design"><div class="step-card" data-index="7"><div class="step-num">5</div><div class="step-icon">&#9670;</div><div class="step-label">Rules of the system</div></div></div>
+    <div class="step-col cluster-design"><div class="step-card" data-index="8"><div class="step-num">4</div><div class="step-icon">&#9733;</div><div class="step-label">Self-organisation</div></div></div>
+    <div class="step-col cluster-intent"><div class="step-card" data-index="9"><div class="step-num">3</div><div class="step-icon">&#9678;</div><div class="step-label">Goals of the system</div></div></div>
+    <div class="step-col cluster-intent"><div class="step-card" data-index="10"><div class="step-num">2</div><div class="step-icon">&#10022;</div><div class="step-label">Paradigms &amp; worldviews</div></div></div>
+    <div class="step-col cluster-intent"><div class="step-card" data-index="11"><div class="step-num">1</div><div class="step-icon">&#10047;</div><div class="step-label">Transcending paradigms</div></div></div>
+  </div>
+
+  <div class="annotations">
+    <div class="anno anno-shallow">Most SME AI<br>interventions cluster here</div>
+    <div class="anno-arrow">
+      <div class="anno-arrow-line"></div>
+      <div class="anno-arrow-text">imagination enables deeper intervention</div>
+    </div>
+    <div class="anno-deep">Where Futures Consciousness<br>+ AI could reach</div>
+  </div>
+
+  <!-- Detail panel -->
+  <div class="detail-panel" id="detail">
+    <div class="detail-prompt">Click any step above to explore</div>
+  </div>
+
+  <div class="source">
+    Adapted from Meadows (1999), classified into four system characteristics by Abson et al. (2017),
+    operationalised for empirical research by Riechers et al. (2022)
+  </div>
+
+</div>
+
+<script>
+(function() {
+  var data = [
+    {
+      num: "12", title: "Constants, parameters, numbers",
+      cluster: "Parameters", clusterColor: "var(--gold-deep)",
+      desc: "Subsidies, taxes, standards, resource prices. These are the most common policy interventions but the least effective at creating systemic change. Adjusting numbers rarely changes behaviour patterns.",
+      example: "An SME sets an energy reduction target of 10%. AI optimises HVAC schedules to hit the number \u2014 but the business model, supply chain logic, and value proposition remain unchanged.",
+      thesis: "This is where most Nordic SME sustainability efforts currently cluster (Tsvetkova et al., 2020). AI tools reinforce this by automating parameter adjustments \u2014 cost reduction, efficiency gains \u2014 without questioning the system design."
+    },
+    {
+      num: "11", title: "Buffer sizes",
+      cluster: "Parameters", clusterColor: "var(--gold-deep)",
+      desc: "The stabilising power of stocks relative to their flows. Buffers absorb shocks but are often expensive or slow to build. Inventory levels, cash reserves, and ecosystem resilience all function as buffers.",
+      example: "An SME uses AI-driven demand forecasting to optimise inventory buffers \u2014 reducing waste and improving cash flow within the existing operational model.",
+      thesis: "Buffer optimisation is a classic shallow AI application: valuable for resilience but operating entirely within the current system architecture."
+    },
+    {
+      num: "10", title: "Material stocks and flows",
+      cluster: "Parameters", clusterColor: "var(--gold-deep)",
+      desc: "The physical structure of the system \u2014 infrastructure, resource flows, production capacity. These change slowly and constrain what the system can do.",
+      example: "An SME uses AI to optimise logistics routes and material throughput, reducing waste in the physical supply chain.",
+      thesis: "Physical restructuring is deeper than parameter tweaking but still operates within the existing system logic. AI here serves as an efficiency tool, not a reimagination tool."
+    },
+    {
+      num: "9", title: "Delays relative to system changes",
+      cluster: "Feedback", clusterColor: "var(--lavender-deep)",
+      desc: "The time lag between a change and its visible effect. Delays cause oscillation and overshoot. If decision-makers cannot perceive the consequences of their actions in time, they cannot learn from them.",
+      example: "AI provides real-time sustainability dashboards that shorten feedback delays \u2014 leaders see the impact of decisions faster, enabling more responsive adjustments.",
+      thesis: "Shortening delays is where AI begins to shift from optimisation toward system awareness. But perceiving faster feedback requires the cognitive capacity to interpret it systemically \u2014 a capacity FC's Systems Perception dimension provides."
+    },
+    {
+      num: "8", title: "Balancing feedback loops",
+      cluster: "Feedback", clusterColor: "var(--lavender-deep)",
+      desc: "Self-correcting mechanisms that keep the system in check. Regulatory oversight, quality control, performance reviews. Their strength determines how well the system self-regulates.",
+      example: "An SME implements AI-powered compliance monitoring that automatically flags deviations from sustainability standards and triggers corrective actions.",
+      thesis: "Strengthening balancing loops is valuable but inherently conservative \u2014 it maintains the system's current goals rather than questioning them."
+    },
+    {
+      num: "7", title: "Reinforcing feedback loops",
+      cluster: "Feedback", clusterColor: "var(--lavender-deep)",
+      desc: "Self-amplifying mechanisms \u2014 virtuous or vicious cycles. Growth engines, network effects, reputational spirals. The power to drive exponential change in either direction.",
+      example: "AI identifies that sustainability reporting creates a reinforcing loop: better data attracts ESG investors, which funds deeper sustainability, which generates better data.",
+      thesis: "Recognising and activating reinforcing loops requires seeing interconnections \u2014 FC's Systems Perception. Leaders who can identify these loops can use AI to amplify virtuous cycles rather than just monitor them."
+    },
+    {
+      num: "6", title: "Information flows",
+      cluster: "Feedback", clusterColor: "var(--lavender-deep)",
+      desc: "Who has access to what information, and when. Missing feedback is one of the most common causes of system malfunction. Restoring information flows can be a powerful and often inexpensive intervention.",
+      example: "An SME uses AI to make supply chain emissions visible to all decision-makers \u2014 information that was previously hidden in supplier contracts and logistics data.",
+      thesis: "Information flow restructuring sits at the boundary between feedback and design. AI excels at surfacing hidden information, but choosing which information matters requires imagination \u2014 the capacity to see what could be relevant, not just what currently is."
+    },
+    {
+      num: "5", title: "Rules of the system",
+      cluster: "Design", clusterColor: "var(--sage-deep)",
+      desc: "Incentives, punishments, constraints. The rules define the scope, boundaries, and degrees of freedom within which the system operates. Changing rules changes behaviour patterns.",
+      example: "An SME restructures procurement rules so that suppliers are evaluated on circular economy metrics rather than just cost \u2014 AI helps model the trade-offs and identify viable alternatives.",
+      thesis: "Rule changes mark the threshold where AI shifts from optimising within constraints to redesigning the constraints themselves. This requires FC's Openness to Alternatives \u2014 the capacity to imagine a different set of rules."
+    },
+    {
+      num: "4", title: "Self-organisation",
+      cluster: "Design", clusterColor: "var(--sage-deep)",
+      desc: "The power to add, change, or evolve system structure. Self-organising systems can learn, adapt, and create novel configurations. This is where evolution, creativity, and emergence happen.",
+      example: "An SME uses AI to facilitate emergent collaboration networks with other businesses, creating new value chains that did not exist before \u2014 circular material exchanges, shared regenerative infrastructure.",
+      thesis: "Self-organisation requires enabling leadership (Uhl-Bien & Arena, 2017) \u2014 creating conditions for novel structures to emerge rather than imposing them. Leaders high in FC's Agency Beliefs and Openness to Alternatives are more likely to foster this."
+    },
+    {
+      num: "3", title: "Goals of the system",
+      cluster: "Intent", clusterColor: "var(--rose-deep)",
+      desc: "The purpose or function the system serves. Everything below this point \u2014 feedback loops, rules, parameters \u2014 serves the goal. Changing the goal changes everything beneath it.",
+      example: "An SME shifts its goal from 'maximise shareholder value sustainably' to 'regenerate the ecosystems our business depends on.' AI is then redirected from efficiency optimisation to ecosystem health modelling.",
+      thesis: "Goal-level intervention is where imagination becomes essential. Leaders must envision an entirely different purpose for their organisation. This maps directly to FC's Time Perspective and Concern for Others \u2014 seeing beyond immediate returns to long-term systemic health."
+    },
+    {
+      num: "2", title: "Paradigms and worldviews",
+      cluster: "Intent", clusterColor: "var(--rose-deep)",
+      desc: "The shared ideas, unstated assumptions, and deep beliefs from which goals, rules, and structures arise. Paradigms are the sources of systems. Changing them is the most powerful transformation available, and the most difficult.",
+      example: "An SME's leadership team uses AI-facilitated scenario planning to surface and challenge their assumption that growth equals success \u2014 reimagining the business as a stewardship organisation rather than a growth engine.",
+      thesis: "This is the deepest leverage point most leaders can consciously target. Fischer and Riechers (2019) argue it requires bridging causal and teleological reasoning \u2014 exactly the cognitive integration that high FC enables. AI here serves as a mirror for paradigm examination, not a solution generator."
+    },
+    {
+      num: "1", title: "Transcending paradigms",
+      cluster: "Intent", clusterColor: "var(--rose-deep)",
+      desc: "The ability to step outside any paradigm and see it as one of many possible ways of organising reality. Not being attached to any single worldview. Meadows called this the highest leverage point and acknowledged it is the rarest.",
+      example: "A leader holds multiple paradigms simultaneously \u2014 efficiency AND regeneration AND justice \u2014 using AI to model the tensions between them rather than resolving prematurely into a single framework.",
+      thesis: "Transcendence is the aspiration behind this thesis. If Futures Consciousness enables leaders to hold multiple futures open and AI amplifies this capacity, then the combination could help leaders operate at this level \u2014 not just optimising within one paradigm but navigating between paradigms. This is Gopel's (2016) 'great mindshift' made operational."
+    }
+  ];
+
+  var activeIndex = null;
+  var panel = document.getElementById("detail");
+  var cards = document.querySelectorAll(".step-card");
+
+  function el(tag, className, textContent) {
+    var node = document.createElement(tag);
+    if (className) node.className = className;
+    if (textContent) node.textContent = textContent;
+    return node;
+  }
+
+  function showPrompt() {
+    while (panel.firstChild) panel.removeChild(panel.firstChild);
+    var p = el("div", "detail-prompt", "Click any step above to explore");
+    panel.appendChild(p);
+  }
+
+  function showDetail(i) {
+    var d = data[i];
+
+    cards.forEach(function(c) { c.classList.remove("active"); });
+
+    if (activeIndex === i) {
+      activeIndex = null;
+      panel.classList.remove("visible");
+      setTimeout(showPrompt, 200);
+      return;
+    }
+
+    activeIndex = i;
+    cards[i].classList.add("active");
+
+    while (panel.firstChild) panel.removeChild(panel.firstChild);
+
+    // Header
+    var header = el("div", "detail-header");
+    var numEl = el("div", "detail-num", d.num);
+    numEl.style.color = d.clusterColor;
+    var titleEl = el("div", "detail-title", d.title);
+    header.appendChild(numEl);
+    header.appendChild(titleEl);
+    panel.appendChild(header);
+
+    // Cluster label
+    var clusterEl = el("div", "detail-cluster", d.cluster);
+    clusterEl.style.color = d.clusterColor;
+    panel.appendChild(clusterEl);
+
+    // Body grid
+    var body = el("div", "detail-body");
+
+    var descEl = el("div", "detail-desc", d.desc);
+    body.appendChild(descEl);
+
+    var exampleBox = el("div", "detail-example");
+    var exLabel = el("div", "detail-example-label", "SME + AI Example");
+    var exText = el("p", null, d.example);
+    exampleBox.appendChild(exLabel);
+    exampleBox.appendChild(exText);
+    body.appendChild(exampleBox);
+
+    var thesisBox = el("div", "detail-thesis");
+    var thLabel = el("span", "detail-thesis-label", "Thesis connection");
+    thesisBox.appendChild(thLabel);
+    thesisBox.appendChild(document.createTextNode(" " + d.thesis));
+    body.appendChild(thesisBox);
+
+    panel.appendChild(body);
+
+    panel.classList.remove("visible");
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        panel.classList.add("visible");
+      });
+    });
+
+    setTimeout(function() {
+      panel.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }, 100);
+  }
+
+  cards.forEach(function(card) {
+    card.addEventListener("click", function() {
+      var idx = parseInt(this.getAttribute("data-index"), 10);
+      showDetail(idx);
+    });
+  });
+
+  showPrompt();
+})();
+</script>
+
+</body>
+</html>

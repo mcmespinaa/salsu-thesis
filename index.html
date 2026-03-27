@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thesis Architecture -- Imagination, AI & Leverage Depth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf8f5;
+    --warm-white: #f5f0eb;
+    --blush: #f2e4dc;
+    --blush-light: #faf3ef;
+    --rose: #c9828e;
+    --rose-deep: #a8636f;
+    --rose-muted: #d4a0a7;
+    --sage: #8baa8e;
+    --sage-deep: #5e7d61;
+    --sage-light: #e8f0e8;
+    --lavender: #b8a9d4;
+    --lavender-deep: #8b7ab5;
+    --lavender-light: #f0ecf7;
+    --mauve: #c4a7b5;
+    --mauve-deep: #9e7a8e;
+    --gold: #c9a96e;
+    --gold-deep: #a8864d;
+    --gold-light: #f7f0e3;
+    --terracotta: #c4897a;
+    --terracotta-deep: #a86b5c;
+    --clay: #d4b5a0;
+    --ink: #2d2a26;
+    --ink-light: #5a5650;
+    --ink-muted: #8a8580;
+    --ink-faint: #b5b0aa;
+    --border: rgba(45, 42, 38, 0.08);
+    --border-med: rgba(45, 42, 38, 0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    overflow-x: hidden;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .canvas {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 80px 48px 120px;
+  }
+
+  /* ─── Title ─── */
+  .title-block {
+    text-align: center;
+    margin-bottom: 80px;
+  }
+  .title-block h1 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 2.6rem;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    line-height: 1.2;
+  }
+  .title-block .subtitle {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.1rem;
+    color: var(--ink-muted);
+    margin-top: 10px;
+    font-style: italic;
+    letter-spacing: 0.02em;
+  }
+  .title-block .rule {
+    width: 56px;
+    height: 1px;
+    background: var(--rose-muted);
+    margin: 20px auto 0;
+  }
+
+  /* ─── Zones ─── */
+  .zone {
+    border-radius: 3px;
+    padding: 56px 48px;
+    margin-bottom: 64px;
+    border: 1px solid var(--border);
+  }
+  .zone-heading {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 48px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .zone-heading::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+  }
+
+  .z-problem { background: var(--lavender-light); border-color: rgba(184,169,212,0.22); }
+  .z-problem .zone-heading { color: var(--lavender-deep); }
+  .z-problem .zone-heading::after { background: rgba(184,169,212,0.28); }
+
+  .z-theory { background: var(--blush-light); border-color: rgba(201,130,142,0.18); }
+  .z-theory .zone-heading { color: var(--rose-deep); }
+  .z-theory .zone-heading::after { background: rgba(201,130,142,0.22); }
+
+  .z-methods { background: var(--sage-light); border-color: rgba(139,170,142,0.22); }
+  .z-methods .zone-heading { color: var(--sage-deep); }
+  .z-methods .zone-heading::after { background: rgba(139,170,142,0.28); }
+
+  .z-timeline { background: var(--gold-light); border-color: rgba(201,169,110,0.22); }
+  .z-timeline .zone-heading { color: var(--gold-deep); }
+  .z-timeline .zone-heading::after { background: rgba(201,169,110,0.28); }
+
+  .z-gates { background: #fdf2f0; border-color: rgba(196,137,122,0.22); }
+  .z-gates .zone-heading { color: var(--terracotta-deep); }
+  .z-gates .zone-heading::after { background: rgba(196,137,122,0.28); }
+
+  /* ─── Shared typography ─── */
+  .serif { font-family: 'Cormorant Garamond', Georgia, serif; }
+  .cite { font-style: italic; color: var(--ink-muted); font-size: 0.7rem; margin-top: 4px; }
+  .small { font-size: 0.75rem; line-height: 1.55; color: var(--ink-light); }
+  .xs { font-size: 0.7rem; line-height: 1.5; color: var(--ink-light); }
+
+  /* ─── Grid connector arrows (CSS only) ─── */
+  .arrow-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ink-faint);
+    font-size: 1.2rem;
+    letter-spacing: -2px;
+  }
+  .arrow-down {
+    text-align: center;
+    color: var(--ink-faint);
+    font-size: 1.1rem;
+    padding: 8px 0;
+  }
+  .arrow-label {
+    display: block;
+    font-size: 0.62rem;
+    color: var(--ink-faint);
+    font-style: italic;
+    letter-spacing: 0.02em;
+    text-align: center;
+  }
+
+  /* ═══════════════════════════════════════════
+     ZONE 1: PROBLEM ARCHITECTURE
+     ═══════════════════════════════════════════ */
+  .problem-chain {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+    align-items: start;
+    gap: 0 12px;
+    margin-bottom: 48px;
+  }
+  .problem-chain .arrow-right { padding-top: 28px; }
+
+  .p-card {
+    border-radius: 10px;
+    padding: 22px 20px;
+  }
+  .p-card h3 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.92rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .pc-sme { background: #ede8f5; border: 1px solid rgba(139,122,181,0.28); }
+  .pc-sme h3 { color: var(--lavender-deep); }
+  .pc-shallow { background: #f5eddf; border: 1px solid rgba(201,169,110,0.32); }
+  .pc-shallow h3 { color: var(--gold-deep); }
+  .pc-ai { background: #f5e0dd; border: 1px solid rgba(196,137,122,0.32); }
+  .pc-ai h3 { color: var(--terracotta-deep); }
+
+  .lp-tower {
+    border-radius: 10px;
+    padding: 20px 18px;
+    background: #eef3ee;
+    border: 1px solid rgba(94,125,97,0.2);
+    position: relative;
+    overflow: visible;
+  }
+
+  /* ─── Lever animation ─── */
+  .lever-cta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 14px;
+    gap: 4px;
+  }
+  .lever-svg {
+    width: 56px;
+    height: 48px;
+    overflow: visible;
+  }
+  .lever-arm {
+    transform-origin: 28px 38px;
+    animation: lever-rock 2.8s ease-in-out infinite;
+  }
+  .lever-ball {
+    animation: lever-rock 2.8s ease-in-out infinite;
+  }
+  @keyframes lever-rock {
+    0%, 100% { transform: rotate(-20deg); }
+    50% { transform: rotate(20deg); }
+  }
+  .lever-cta-label {
+    font-size: 0.58rem;
+    color: var(--sage);
+    font-style: italic;
+    letter-spacing: 0.02em;
+    animation: lever-pulse 2.8s ease-in-out infinite;
+  }
+  @keyframes lever-pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+  }
+  .lp-tower:hover .lever-arm,
+  .lp-tower:hover .lever-ball {
+    animation-play-state: paused;
+    transform: rotate(0deg);
+  }
+  .lp-tower:hover .lever-cta-label {
+    animation-play-state: paused;
+    opacity: 1;
+    color: var(--sage-deep);
+  }
+  .lp-tower-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--sage-deep);
+    text-align: center;
+    margin-bottom: 4px;
+  }
+  .lp-tower .cite { text-align: center; display: block; margin-bottom: 10px; }
+  .lp-level {
+    border-radius: 6px;
+    padding: 8px 12px;
+    text-align: center;
+    font-size: 0.72rem;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .lp-intent { background: var(--sage-deep); color: #fff; }
+  .lp-design { background: var(--sage); color: #fff; }
+  .lp-feedback { background: #b8d4ba; color: var(--ink); }
+  .lp-params { background: #d8e8d9; color: var(--ink-light); }
+  .lp-annotation {
+    font-size: 0.62rem;
+    text-align: right;
+    margin-top: 6px;
+  }
+
+  /* Gap + Star + RQ row */
+  .problem-resolution {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1.5fr;
+    align-items: center;
+    gap: 0 12px;
+    margin-bottom: 40px;
+  }
+
+  .gap-card {
+    background: #f7f0e3;
+    border: 2px solid rgba(201,169,110,0.4);
+    border-radius: 10px;
+    padding: 24px 22px;
+    text-align: center;
+  }
+  .gap-card h3 { font-family: 'Cormorant Garamond', Georgia, serif; color: var(--gold-deep); font-size: 0.95rem; margin-bottom: 6px; }
+
+  .star-card {
+    background: linear-gradient(135deg, #f7f0e3, #f5eddf);
+    border: 2px solid var(--gold);
+    border-radius: 10px;
+    padding: 24px 22px;
+    text-align: center;
+  }
+  .star-card h3 { font-family: 'Cormorant Garamond', Georgia, serif; color: var(--gold-deep); font-size: 0.95rem; }
+
+  .rq-card {
+    background: linear-gradient(135deg, #f2e4dc, #f0ecf7);
+    border: 2px solid var(--rose-muted);
+    border-radius: 10px;
+    padding: 24px 22px;
+    text-align: center;
+  }
+  .rq-card h3 { font-family: 'Cormorant Garamond', Georgia, serif; color: var(--rose-deep); font-size: 0.95rem; margin-bottom: 8px; }
+
+  .cl-card {
+    background: var(--lavender-light);
+    border: 1px dashed rgba(139,122,181,0.35);
+    border-radius: 10px;
+    padding: 22px 24px;
+    text-align: center;
+    max-width: 380px;
+    margin: 0 auto;
+  }
+  .cl-card h3 { font-family: 'Cormorant Garamond', Georgia, serif; color: var(--lavender-deep); font-size: 0.9rem; margin-bottom: 6px; }
+
+  /* ═══════════════════════════════════════════
+     ZONE 2: THEORETICAL MODEL
+     ═══════════════════════════════════════════ */
+  .theory-grid {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr;
+    align-items: start;
+    gap: 0 20px;
+    margin-bottom: 48px;
+  }
+  .theory-grid > .arrow-right { padding-top: 36px; }
+
+  .construct {
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+  }
+  .construct h3 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  .c-fc { background: linear-gradient(135deg, #ddd5ed, #e8e0f5); border: 2px solid var(--lavender); }
+  .c-fc h3 { color: var(--lavender-deep); }
+  .c-ai { background: linear-gradient(135deg, #ede1ea, #f0e5f0); border: 2px solid var(--mauve); }
+  .c-ai h3 { color: var(--mauve-deep); }
+  .c-dv { background: linear-gradient(135deg, #dce8dd, #e5efe6); border: 3px solid var(--sage); }
+  .c-dv h3 { color: var(--sage-deep); }
+
+  .fc-dims {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .fc-dim {
+    background: rgba(184,169,212,0.1);
+    border: 1px solid rgba(184,169,212,0.22);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 0.7rem;
+    text-align: center;
+    color: var(--ink-light);
+  }
+  .fc-dim b { display: block; color: var(--lavender-deep); font-size: 0.72rem; margin-bottom: 2px; }
+  .fc-dim.hl { border-color: var(--lavender); background: rgba(184,169,212,0.18); }
+  .fc-dim.span-2 { grid-column: span 2; }
+
+  .hyp-box {
+    background: rgba(201,169,110,0.1);
+    border: 1px solid rgba(201,169,110,0.28);
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 0.7rem;
+    color: var(--ink-light);
+    text-align: center;
+    font-style: italic;
+    margin-top: 16px;
+  }
+  .hyp-box b { color: var(--gold-deep); font-style: normal; }
+
+  .ai-types {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  .ai-type {
+    border-radius: 8px;
+    padding: 14px;
+    font-size: 0.7rem;
+    text-align: center;
+    color: var(--ink-light);
+  }
+  .ai-type b { display: block; color: var(--mauve-deep); margin-bottom: 2px; }
+  .ai-shallow { background: rgba(196,167,181,0.12); border: 1px solid rgba(196,167,181,0.28); }
+  .ai-deep { background: rgba(196,167,181,0.22); border: 1px solid rgba(158,122,142,0.32); }
+
+  .controls-pill {
+    background: var(--warm-white);
+    border: 1px dashed var(--border-med);
+    border-radius: 20px;
+    padding: 6px 18px;
+    font-size: 0.68rem;
+    color: var(--ink-muted);
+    text-align: center;
+    margin-top: 14px;
+  }
+
+  .sdg-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 14px;
+  }
+  .sdg {
+    background: rgba(196,137,122,0.08);
+    border: 1px solid rgba(196,137,122,0.22);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 0.7rem;
+    text-align: center;
+    color: var(--ink-light);
+  }
+  .sdg b { color: var(--terracotta-deep); display: block; margin-bottom: 2px; }
+
+  /* Literature map */
+  .lit-map {
+    background: rgba(201,169,110,0.06);
+    border: 1px solid rgba(201,169,110,0.18);
+    border-radius: 12px;
+    padding: 32px 28px;
+    margin-top: 48px;
+  }
+  .lit-map-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--gold-deep);
+    margin-bottom: 24px;
+    letter-spacing: 0.02em;
+  }
+  .lit-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  .lit-card {
+    background: var(--cream);
+    border-radius: 8px;
+    padding: 16px 18px;
+    font-size: 0.7rem;
+    border-left: 3px solid;
+    color: var(--ink-light);
+    line-height: 1.5;
+  }
+  .lit-card b { display: block; margin-bottom: 3px; font-size: 0.72rem; }
+  .lit-card.adoption { border-left-color: var(--gold); }
+  .lit-card.adoption b { color: var(--gold-deep); }
+  .lit-card.fc { border-left-color: var(--lavender); }
+  .lit-card.fc b { color: var(--lavender-deep); }
+  .lit-card.lp { border-left-color: var(--sage); }
+  .lit-card.lp b { color: var(--sage-deep); }
+  .lit-card.bridge { border-left-color: var(--mauve); }
+  .lit-card.bridge b { color: var(--mauve-deep); }
+
+  .lit-gap {
+    background: rgba(201,130,142,0.1);
+    border: 1px solid rgba(201,130,142,0.28);
+    border-radius: 8px;
+    padding: 16px 22px;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--rose-deep);
+    font-weight: 500;
+  }
+  .lit-legend {
+    display: flex;
+    gap: 20px;
+    margin-top: 18px;
+    font-size: 0.62rem;
+    color: var(--ink-muted);
+    flex-wrap: wrap;
+  }
+  .lit-legend span { display: flex; align-items: center; gap: 5px; }
+  .lit-legend .dot { width: 9px; height: 9px; border-radius: 2px; display: inline-block; }
+
+  /* ═══════════════════════════════════════════
+     ZONE 3: RESEARCH DESIGN
+     ═══════════════════════════════════════════ */
+  .method-lane {
+    border-radius: 12px;
+    padding: 32px 28px;
+    margin-bottom: 32px;
+  }
+  .qual-lane { background: rgba(139,170,142,0.07); border: 1px solid rgba(139,170,142,0.18); }
+  .quant-lane { background: rgba(184,169,212,0.07); border: 1px solid rgba(184,169,212,0.18); }
+
+  .lane-header {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .lane-header h3 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.95rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+  }
+  .lane-header .rqs { font-size: 0.7rem; color: var(--ink-muted); font-style: italic; }
+  .qual-lane .lane-header h3 { color: var(--sage-deep); }
+  .quant-lane .lane-header h3 { color: var(--lavender-deep); }
+
+  .steps-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 10px;
+  }
+  .step {
+    border-radius: 10px;
+    padding: 18px 16px;
+  }
+  .step h4 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .step p { font-size: 0.66rem; line-height: 1.5; color: var(--ink-light); }
+  .step .cite { font-size: 0.6rem; }
+  .step-qual { background: rgba(139,170,142,0.1); border: 1px solid rgba(139,170,142,0.18); }
+  .step-qual h4 { color: var(--sage-deep); }
+  .step-qual.key { border-color: rgba(94,125,97,0.32); background: rgba(139,170,142,0.16); }
+  .step-quant { background: rgba(184,169,212,0.1); border: 1px solid rgba(184,169,212,0.18); }
+  .step-quant h4 { color: var(--lavender-deep); }
+  .step-quant.key { border-color: rgba(139,122,181,0.32); background: rgba(184,169,212,0.16); }
+
+  .rq-text {
+    font-size: 0.73rem;
+    color: var(--ink-light);
+    margin-top: 24px;
+    padding: 16px 20px;
+    background: rgba(255,255,255,0.45);
+    border-radius: 8px;
+    line-height: 1.6;
+    border: 1px solid var(--border);
+  }
+  .rq-text b { color: var(--ink); }
+
+  /* Convergence */
+  .convergence {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin: 36px 0;
+  }
+  .converge-node {
+    background: linear-gradient(135deg, #f7f0e3, #f5eddf);
+    border: 2px solid var(--gold);
+    border-radius: 12px;
+    padding: 24px 28px;
+    text-align: center;
+  }
+  .converge-node h3 { font-family: 'Cormorant Garamond', Georgia, serif; color: var(--gold-deep); font-size: 0.95rem; margin-bottom: 6px; }
+  .converge-node p { color: var(--ink-light); font-size: 0.75rem; font-style: italic; }
+
+  .shared-box {
+    background: rgba(201,169,110,0.08);
+    border: 1px solid rgba(201,169,110,0.22);
+    border-radius: 12px;
+    padding: 24px 28px;
+    font-size: 0.73rem;
+    color: var(--ink-light);
+    line-height: 1.6;
+  }
+  .shared-box b { color: var(--gold-deep); display: block; margin-bottom: 6px; font-size: 0.75rem; }
+
+  /* Contributions */
+  .contrib-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 36px;
+  }
+  .contrib-card {
+    background: rgba(201,130,142,0.05);
+    border: 1px solid rgba(201,130,142,0.16);
+    border-radius: 12px;
+    padding: 22px 24px;
+  }
+  .contrib-card h4 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    color: var(--rose-deep);
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+  .contrib-card p { font-size: 0.7rem; color: var(--ink-light); line-height: 1.55; }
+
+  .reframe {
+    background: linear-gradient(135deg, #f2e4dc, #f0ecf7);
+    border: 2px solid var(--rose-muted);
+    border-radius: 14px;
+    padding: 36px 40px;
+    text-align: center;
+    margin: 40px auto 0;
+    max-width: 520px;
+  }
+  .reframe h3 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    color: var(--rose-deep);
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .reframe p {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    color: var(--ink-light);
+    font-size: 1rem;
+    font-style: italic;
+    line-height: 1.6;
+  }
+  .reframe em { color: var(--ink); font-weight: 600; }
+
+  /* ═══════════════════════════════════════════
+     ZONE 4: WORK PLAN
+     ═══════════════════════════════════════════ */
+  .phases-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-bottom: 44px;
+  }
+  .phase {
+    border-radius: 12px;
+    padding: 22px 20px;
+  }
+  .phase h4 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--gold-deep);
+  }
+  .phase .weeks { font-size: 0.66rem; color: var(--gold); font-style: italic; margin-bottom: 10px; }
+  .phase hr { border: none; border-top: 1px solid rgba(201,169,110,0.2); margin: 8px 0 14px; }
+  .phase ul { list-style: none; padding: 0; }
+  .phase li { font-size: 0.66rem; color: var(--ink-light); padding: 4px 0; display: flex; align-items: baseline; gap: 6px; }
+  .phase li::before { content: '\25CB'; color: var(--gold); font-size: 0.55rem; flex-shrink: 0; }
+  .phase-1 { background: rgba(201,169,110,0.06); border: 1px solid rgba(201,169,110,0.16); }
+  .phase-2 { background: rgba(201,169,110,0.08); border: 1px solid rgba(201,169,110,0.2); }
+  .phase-3 { background: rgba(201,169,110,0.11); border: 1px solid rgba(201,169,110,0.24); }
+  .phase-4 { background: rgba(201,169,110,0.14); border: 1px solid rgba(201,169,110,0.28); }
+  .phase-5 { background: rgba(201,169,110,0.18); border: 1px solid rgba(201,169,110,0.32); }
+
+  /* Partners */
+  .partners-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 0.8fr;
+    gap: 16px;
+  }
+  .partner {
+    border-radius: 12px;
+    padding: 24px 22px;
+  }
+  .partner h4 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 14px;
+  }
+  .partner ul { list-style: none; padding: 0; }
+  .partner li { font-size: 0.66rem; color: var(--ink-light); padding: 4px 0; display: flex; align-items: baseline; gap: 6px; }
+  .partner li::before { content: '\25CB'; font-size: 0.55rem; flex-shrink: 0; }
+  .p-qual { background: rgba(139,170,142,0.07); border: 2px solid rgba(139,170,142,0.28); }
+  .p-qual h4 { color: var(--sage-deep); }
+  .p-qual li::before { color: var(--sage); }
+  .p-quant { background: rgba(184,169,212,0.07); border: 2px solid rgba(184,169,212,0.28); }
+  .p-quant h4 { color: var(--lavender-deep); }
+  .p-quant li::before { color: var(--lavender); }
+  .p-shared { background: rgba(201,169,110,0.07); border: 2px solid rgba(201,169,110,0.28); }
+  .p-shared h4 { color: var(--gold-deep); }
+  .p-shared li::before { color: var(--gold); }
+  .p-shared .sync {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(201,169,110,0.22);
+    font-size: 0.66rem;
+    color: var(--ink-light);
+    font-style: italic;
+  }
+  .p-shared .sync b { color: var(--gold-deep); font-style: normal; }
+  .p-ethics { background: rgba(196,167,181,0.07); border: 2px solid rgba(196,167,181,0.22); }
+  .p-ethics h4 { font-family: 'Cormorant Garamond', Georgia, serif; color: var(--mauve-deep); }
+  .p-ethics li::before { color: var(--mauve); }
+
+  /* ═══════════════════════════════════════════
+     ZONE 5: DECISION GATES
+     ═══════════════════════════════════════════ */
+  .gates-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
+  }
+  .gate {
+    background: rgba(196,137,122,0.06);
+    border: 1.5px solid rgba(196,137,122,0.22);
+    border-radius: 12px;
+    padding: 24px 20px;
+    text-align: center;
+  }
+  .gate h4 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    color: var(--terracotta-deep);
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-bottom: 8px;
+    letter-spacing: 0.06em;
+  }
+  .gate p { font-size: 0.68rem; color: var(--ink-light); line-height: 1.5; }
+
+  /* ─── CTA / Proposal link ─── */
+  .cta-section {
+    text-align: center;
+    margin-top: 20px;
+    padding: 56px 48px;
+  }
+  .cta-section .cta-label {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 16px;
+  }
+  .cta-btn {
+    display: inline-block;
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: var(--rose-deep);
+    background: linear-gradient(135deg, #f2e4dc, #f0ecf7);
+    border: 2px solid var(--rose-muted);
+    border-radius: 12px;
+    padding: 18px 40px;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    cursor: pointer;
+  }
+  .cta-btn:hover {
+    background: linear-gradient(135deg, #eddad0, #e8e0f2);
+    border-color: var(--rose);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 16px rgba(201,130,142,0.15);
+  }
+  .cta-btn .arrow-icon { margin-left: 8px; font-style: normal; }
+  .cta-meta {
+    margin-top: 14px;
+    font-size: 0.68rem;
+    color: var(--ink-faint);
+    line-height: 1.6;
+  }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 900px) {
+    .canvas { padding: 40px 24px 60px; }
+    .zone { padding: 32px 24px; }
+    .title-block h1 { font-size: 2rem; }
+    .problem-chain,
+    .problem-resolution,
+    .theory-grid { grid-template-columns: 1fr; gap: 12px; }
+    .problem-chain .arrow-right,
+    .problem-resolution .arrow-right,
+    .theory-grid .arrow-right { transform: rotate(90deg); }
+    .steps-grid { grid-template-columns: repeat(3, 1fr); }
+    .phases-grid { grid-template-columns: repeat(3, 1fr); }
+    .partners-grid { grid-template-columns: 1fr 1fr; }
+    .gates-grid { grid-template-columns: repeat(3, 1fr); }
+    .lit-grid { grid-template-columns: repeat(2, 1fr); }
+    .contrib-grid { grid-template-columns: 1fr; }
+    .convergence { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 600px) {
+    .steps-grid,
+    .phases-grid { grid-template-columns: 1fr 1fr; }
+    .partners-grid,
+    .gates-grid { grid-template-columns: 1fr; }
+    .fc-dims,
+    .ai-types,
+    .sdg-row { grid-template-columns: 1fr; }
+    .fc-dim.span-2 { grid-column: span 1; }
+  }
+</style>
+</head>
+<body>
+
+<div class="canvas">
+
+  <!-- TITLE -->
+  <div class="title-block">
+    <h1>Thesis Architecture</h1>
+    <p class="subtitle">Imagination, AI & Leverage Depth in Nordic SME Sustainability</p>
+    <div class="rule"></div>
+  </div>
+
+  <!-- ═══════ ZONE 1: PROBLEM ═══════ -->
+  <div class="zone z-problem">
+    <div class="zone-heading">I. Problem Architecture -- Why this study matters</div>
+
+    <div class="problem-chain">
+      <div class="p-card pc-sme">
+        <h3>Nordic SMEs</h3>
+        <p class="small">99.9% of enterprises<br>40% of value-added</p>
+        <p class="cite">(Tsvetkova et al., 2020)</p>
+      </div>
+      <div class="arrow-right">&rarr;<br><span class="arrow-label">efforts remain</span></div>
+      <div class="p-card pc-shallow">
+        <h3>Shallow Sustainability</h3>
+        <p class="small">Energy monitoring, compliance, efficiency</p>
+        <p class="cite">(Abson et al., 2017)</p>
+      </div>
+      <div class="arrow-right">&rarr;<br><span class="arrow-label">AI reinforces</span></div>
+      <div class="p-card pc-ai">
+        <h3>AI Reinforces Pattern</h3>
+        <p class="small">Automation, optimisation, cost reduction</p>
+        <p class="cite">(Badghish & Soomro, 2024)</p>
+      </div>
+      <div class="arrow-right">&rarr;<br><span class="arrow-label">targets only</span></div>
+      <a href="OL652E_leverage-points-staircase.html" class="lp-tower" style="text-decoration:none; display:block; cursor:pointer; transition: box-shadow 0.25s ease;" onmouseover="this.style.boxShadow='0 4px 16px rgba(94,125,97,0.15)'" onmouseout="this.style.boxShadow='none'">
+        <div class="lp-tower-title">Leverage Points</div>
+        <p class="cite">(Meadows, 1999; Abson et al., 2017; Riechers et al., 2022)</p>
+        <div class="lp-level lp-intent">Intent -- Paradigms, worldviews</div>
+        <div class="lp-level lp-design">Design -- Rules, network structure</div>
+        <div class="lp-level lp-feedback">Feedback -- Information flows, delays</div>
+        <div class="lp-level lp-params">Parameters -- Constants, subsidies</div>
+        <p class="lp-annotation" style="color:var(--terracotta-deep); font-style:italic; font-weight:500;">Most SME interventions cluster here</p>
+        <p class="lp-annotation" style="color:var(--sage-deep); letter-spacing:0.05em;">DEEPER &#8593;</p>
+        <div class="lever-cta">
+          <svg class="lever-svg" viewBox="0 0 56 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- Fulcrum triangle -->
+            <polygon points="20,42 36,42 28,34" fill="#8baa8e" opacity="0.5"/>
+            <!-- Base line -->
+            <line x1="14" y1="42" x2="42" y2="42" stroke="#8baa8e" stroke-width="2" stroke-linecap="round"/>
+            <!-- Lever arm -->
+            <g class="lever-arm">
+              <line x1="8" y1="38" x2="48" y2="38" stroke="#5e7d61" stroke-width="2.5" stroke-linecap="round"/>
+              <!-- Left weight (shallow - small) -->
+              <circle cx="10" cy="34" r="4" fill="#c9a96e" opacity="0.7"/>
+              <!-- Right weight (deep - large, glowing) -->
+              <circle class="lever-ball" cx="46" cy="34" r="6" fill="#a8636f" opacity="0.8"/>
+              <circle class="lever-ball" cx="46" cy="34" r="8" fill="#a8636f" opacity="0.15"/>
+            </g>
+          </svg>
+          <span class="lever-cta-label">Explore all 12 leverage points &rarr;</span>
+        </div>
+      </a>
+    </div>
+
+    <div class="problem-resolution">
+      <div class="gap-card">
+        <h3>The Leverage Gap</h3>
+        <p class="small">Institutions demand transformation<br>but equip leaders for optimisation</p>
+        <p class="cite">(Neirotti et al., 2018)</p>
+      </div>
+      <div class="arrow-right">&rarr;<br><span class="arrow-label">this study proposes</span></div>
+      <div class="star-card">
+        <h3>Missing Variable: Imagination</h3>
+        <p class="cite">(Fuller, 1968; Fischer & Riechers, 2019)</p>
+      </div>
+      <div class="arrow-right">&rarr;</div>
+      <div class="rq-card">
+        <h3>Core Question</h3>
+        <p class="small">Do leaders with stronger futures consciousness use AI differently, manifesting as interventions at deeper leverage points?</p>
+      </div>
+    </div>
+
+    <div class="cl-card">
+      <h3>Complexity Leadership</h3>
+      <p class="small">Administrative &#8594; Enabling leadership<br>Parameter-level &#8594; Systemic redesign</p>
+      <p class="cite">(Uhl-Bien & Arena, 2017; Gopel, 2016)</p>
+    </div>
+  </div>
+
+  <!-- ═══════ ZONE 2: THEORY ═══════ -->
+  <div class="zone z-theory">
+    <div class="zone-heading">II. Theoretical Model -- How the constructs relate</div>
+
+    <div class="theory-grid">
+      <div>
+        <div class="construct c-fc">
+          <h3>Futures Consciousness</h3>
+          <p class="cite">(Ahvenharju et al., 2018; Lalot et al., 2020)</p>
+        </div>
+        <div class="fc-dims">
+          <div class="fc-dim"><b>Time Perspective</b>Long-term orientation</div>
+          <div class="fc-dim"><b>Agency Beliefs</b>Capacity to act</div>
+          <div class="fc-dim hl"><b>Openness to Alternatives</b>Imagining different futures</div>
+          <div class="fc-dim hl"><b>Systems Perception</b>Seeing interconnections</div>
+          <div class="fc-dim span-2"><b>Concern for Others</b>Ethical future orientation</div>
+        </div>
+        <div class="hyp-box"><b>RQ4 Hypothesis:</b> Openness to Alternatives & Systems Perception show strongest association</div>
+      </div>
+
+      <div class="arrow-right"><span style="font-size:1.4rem">&rarr;</span><br><span class="arrow-label" style="color:var(--lavender-deep);">shapes</span></div>
+
+      <div>
+        <div class="construct c-ai">
+          <h3>AI Use Patterns</h3>
+          <p class="xs" style="margin-top:4px;">How leaders deploy AI tools</p>
+        </div>
+        <div class="ai-types">
+          <div class="ai-type ai-shallow"><b>Shallow AI Use</b>Automation, efficiency, cost reduction</div>
+          <div class="ai-type ai-deep"><b>Deep AI Use</b>Reimagining models, systemic redesign</div>
+        </div>
+        <div class="hyp-box"><b>RQ4:</b> Does FC x Deep AI Use explain additional variance beyond independent effects?</div>
+      </div>
+
+      <div class="arrow-right"><span style="font-size:1.4rem">&rarr;</span><br><span class="arrow-label" style="color:var(--mauve-deep);">determines</span></div>
+
+      <div>
+        <div class="construct c-dv">
+          <h3>Leverage Depth of<br>Sustainability Initiatives</h3>
+          <p class="xs" style="color:var(--sage); margin-top:4px;">Dependent Variable</p>
+          <p class="cite">(Riechers et al., 2022)</p>
+        </div>
+        <div class="controls-pill">Controls: Firm size &middot; Sector &middot; Country</div>
+        <div class="sdg-row">
+          <div class="sdg"><b>SDG 9</b>Innovation for systemic transformation</div>
+          <div class="sdg"><b>SDG 4</b>Imaginative competencies in AI landscape</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Literature map -->
+    <div class="lit-map">
+      <div class="lit-map-title">Literature Map -- Six key studies & what each contributes</div>
+      <div class="lit-grid">
+        <div class="lit-card adoption"><b>Badghish & Soomro (2024)</b>AI adoption predictors in SMEs<br>&#8594; methodology + extends DV</div>
+        <div class="lit-card adoption"><b>Neirotti et al. (2018)</b>ICT capability in SMEs<br>&#8594; gap: no imagination variable</div>
+        <div class="lit-card fc"><b>Lalot et al. (2020)</b>FC Scale validated (n=1,301)<br>&#8594; survey instrument</div>
+        <div class="lit-card lp"><b>Abson et al. (2017)</b>Leverage points framework<br>&#8594; conceptual foundation</div>
+        <div class="lit-card lp"><b>Riechers et al. (2022)</b>Operationalised LP framework<br>&#8594; coding framework + DV</div>
+        <div class="lit-card bridge"><b>Fischer & Riechers (2019)</b>Deep LP requires cognition<br>&#8594; central hypothesis link</div>
+      </div>
+      <div class="lit-gap">Gap: No study tests whether FC predicts leverage depth of AI-mediated sustainability interventions</div>
+      <div class="lit-legend">
+        <span><span class="dot" style="background:var(--gold)"></span> AI/SME adoption</span>
+        <span><span class="dot" style="background:var(--lavender)"></span> Futures Consciousness</span>
+        <span><span class="dot" style="background:var(--sage)"></span> Leverage Points</span>
+        <span><span class="dot" style="background:var(--mauve)"></span> Bridging theory</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ ZONE 3: METHODS ═══════ -->
+  <div class="zone z-methods">
+    <div class="zone-heading">III. Research Design -- Dual-perspective methodology</div>
+
+    <!-- Qual -->
+    <div class="method-lane qual-lane">
+      <div class="lane-header">
+        <h3>Qualitative</h3>
+        <span class="rqs">RQ1 & RQ2</span>
+      </div>
+      <div class="steps-grid">
+        <div class="step step-qual">
+          <h4>Case Selection</h4>
+          <p>4-6 Nordic SMEs<br>Purposive sampling<br>B Corp, awards, networks<br>Screening questionnaire maps to 4 LP levels</p>
+        </div>
+        <div class="step step-qual">
+          <h4>Replication Logic</h4>
+          <p>2-3 deep LP cases<br>2-3 shallow LP cases<br>Cross-case comparison</p>
+          <p class="cite">(Yin, 2018)</p>
+        </div>
+        <div class="step step-qual">
+          <h4>Data Gathering</h4>
+          <p>Document analysis<br>Semi-structured interviews</p>
+          <p class="cite">(Tsvetkova et al., 2020)</p>
+        </div>
+        <div class="step step-qual key">
+          <h4>Thematic Analysis</h4>
+          <p>6-phase approach <span class="cite">(Braun & Clarke, 2006)</span><br><b>Deductive:</b> 4 LP levels + 5 FC dims<br><b>Inductive:</b> emergent themes</p>
+        </div>
+        <div class="step step-qual">
+          <h4>Cross-Case Analysis</h4>
+          <p>How imagination-AI interactions differ between deep vs. shallow cases</p>
+        </div>
+      </div>
+      <div class="rq-text">
+        <b>RQ1:</b> How do Nordic SME sustainability leaders use AI tools to envision and implement deeper sustainability interventions?<br>
+        <b>RQ2:</b> What distinguishes imagination-AI interaction at deeper LP from SMEs at parameter level?
+      </div>
+    </div>
+
+    <!-- Quant -->
+    <div class="method-lane quant-lane">
+      <div class="lane-header">
+        <h3>Quantitative</h3>
+        <span class="rqs">RQ3 & RQ4</span>
+      </div>
+      <div class="steps-grid">
+        <div class="step step-quant">
+          <h4>Instrument Design</h4>
+          <p>20-item FC Scale <span class="cite">(Lalot et al., 2020)</span><br>Demographics<br>AI use frequency<br>LP vignettes (DV)</p>
+        </div>
+        <div class="step step-quant">
+          <h4>Pilot Testing</h4>
+          <p>Cognitive interviews<br>n = 5-8 SME managers<br>Measurement validity</p>
+          <p class="cite">(Boateng et al., 2018)</p>
+        </div>
+        <div class="step step-quant">
+          <h4>Survey Distribution</h4>
+          <p>Cross-sectional online<br>Nordic SME sustainability managers<br>Target: n = 100-150</p>
+        </div>
+        <div class="step step-quant key">
+          <h4>Statistical Analysis</h4>
+          <p><b>1.</b> Descriptive statistics<br><b>2.</b> Correlation analysis<br><b>3.</b> Hierarchical regression<br>(FC + AI use &#8594; LP depth, controlling size/sector/country)</p>
+        </div>
+        <div class="step step-quant">
+          <h4>Dimension Analysis</h4>
+          <p>Which FC dimensions are strongest predictors?<br>FC x AI interaction effect?</p>
+        </div>
+      </div>
+      <div class="rq-text">
+        <b>RQ3:</b> To what extent are FC and AI use depth associated with leverage depth of sustainability initiatives?<br>
+        <b>RQ4:</b> Do specific FC dimensions and FC x AI interaction explain additional variance?
+      </div>
+    </div>
+
+    <!-- Convergence -->
+    <div class="convergence">
+      <div class="converge-node">
+        <h3>Convergence</h3>
+        <p>Qual explains how<br>Quant tests whether and how much</p>
+      </div>
+      <div class="shared-box">
+        <b>Shared Constructs</b>
+        Both perspectives use:<br>
+        &bull; 4 leverage levels (Riechers et al., 2022)<br>
+        &bull; 5 FC dimensions (Ahvenharju et al., 2018)<br>
+        &bull; AI use depth classification
+      </div>
+    </div>
+
+    <!-- Contributions -->
+    <div class="contrib-grid">
+      <div class="contrib-card">
+        <h4>For SME Leaders</h4>
+        <p>Shift from "Does this improve performance?" to "Is this helping me optimise what exists or imagine what could be?" Concrete models of imagination-AI practice.</p>
+      </div>
+      <div class="contrib-card">
+        <h4>For Policymakers</h4>
+        <p>Conditions for AI as transformative, not just optimising. Design implications for training, adoption guidance, innovation support.</p>
+      </div>
+      <div class="contrib-card">
+        <h4>For Researchers</h4>
+        <p>Moves LP framework from diagnosis to enablers. Bridges FC with technology adoption. Tests cognitive capacity at organisational level mediated by AI.</p>
+      </div>
+    </div>
+
+    <div class="reframe">
+      <h3>Reframing</h3>
+      <p>The question is not <em>what AI tools can do</em><br>but <em>what human imagination enables leaders to do with them</em></p>
+    </div>
+  </div>
+
+  <!-- ═══════ ZONE 4: TIMELINE ═══════ -->
+  <div class="zone z-timeline">
+    <div class="zone-heading">IV. Work Plan -- 10-week timeline with partner allocation</div>
+
+    <div class="phases-grid">
+      <div class="phase phase-1">
+        <h4>Phase 1</h4>
+        <div class="weeks">Weeks 1-2</div>
+        <hr>
+        <ul>
+          <li>Literature review</li>
+          <li>Interview guide</li>
+          <li>Survey instrument design</li>
+          <li>Ethics application</li>
+        </ul>
+      </div>
+      <div class="phase phase-2">
+        <h4>Phase 2</h4>
+        <div class="weeks">Weeks 2-3</div>
+        <hr>
+        <ul>
+          <li>Case recruitment</li>
+          <li>Screening questionnaire</li>
+          <li>Pilot survey (n=5-8)</li>
+          <li>Cognitive interviews</li>
+          <li>Instrument revision</li>
+        </ul>
+      </div>
+      <div class="phase phase-3">
+        <h4>Phase 3</h4>
+        <div class="weeks">Weeks 4-7</div>
+        <hr>
+        <ul>
+          <li>Conduct interviews</li>
+          <li>Distribute survey</li>
+          <li>Transcription</li>
+          <li>Response monitoring</li>
+          <li>Follow-up reminders</li>
+        </ul>
+      </div>
+      <div class="phase phase-4">
+        <h4>Phase 4</h4>
+        <div class="weeks">Weeks 7-8</div>
+        <hr>
+        <ul>
+          <li>Thematic analysis</li>
+          <li>Statistical analysis</li>
+          <li>Cross-case comparison</li>
+          <li>Regression modelling</li>
+          <li>Integration of findings</li>
+        </ul>
+      </div>
+      <div class="phase phase-5">
+        <h4>Phase 5</h4>
+        <div class="weeks">Weeks 8-10</div>
+        <hr>
+        <ul>
+          <li>Writing & revision</li>
+          <li>Discussion chapter</li>
+          <li>Convergence analysis</li>
+          <li>Final submission</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="partners-grid">
+      <div class="partner p-qual">
+        <h4>Partner A -- Qualitative Lead</h4>
+        <ul>
+          <li>Interview guide development</li>
+          <li>Case screening & recruitment</li>
+          <li>Conduct interviews</li>
+          <li>Lead thematic analysis</li>
+          <li>Cross-case write-up</li>
+          <li>Qualitative findings chapter</li>
+        </ul>
+      </div>
+      <div class="partner p-quant">
+        <h4>Partner B -- Quantitative Lead</h4>
+        <ul>
+          <li>Survey instrument assembly</li>
+          <li>Pilot testing & cognitive interviews</li>
+          <li>Survey distribution & monitoring</li>
+          <li>Statistical analysis (SPSS/R)</li>
+          <li>Regression modelling</li>
+          <li>Quantitative findings chapter</li>
+        </ul>
+      </div>
+      <div class="partner p-shared">
+        <h4>Shared</h4>
+        <ul>
+          <li>Literature review (split by domain)</li>
+          <li>Ethics application</li>
+          <li>Screening questionnaire design</li>
+          <li>Introduction & theory chapter</li>
+          <li>Discussion & convergence</li>
+          <li>Revision & submission</li>
+        </ul>
+        <div class="sync"><b>Sync Points:</b> End of each phase -- align on shared constructs & progress</div>
+      </div>
+      <div class="partner p-ethics">
+        <h4>Ethics & Quality</h4>
+        <ul>
+          <li>Informed consent (all participants)</li>
+          <li>Pseudonymised recordings</li>
+          <li>Anonymous survey responses</li>
+          <li>Encrypted university storage</li>
+          <li>Swedish Research Council guidelines <span style="font-size:0.58rem;font-style:italic;color:var(--ink-muted);">(Vetenskapsradet, 2017)</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════ ZONE 5: GATES ═══════ -->
+  <div class="zone z-gates">
+    <div class="zone-heading">V. Decision Gates -- Conversations to have together</div>
+
+    <div class="gates-grid">
+      <div class="gate">
+        <h4>Gate 1</h4>
+        <p>Which perspective first? Sequential or parallel data collection?</p>
+      </div>
+      <div class="gate">
+        <h4>Gate 2</h4>
+        <p>How to operationalise "AI use depth" in survey vignettes?</p>
+      </div>
+      <div class="gate">
+        <h4>Gate 3</h4>
+        <p>Sufficient sample? Adjust target or extend collection period?</p>
+      </div>
+      <div class="gate">
+        <h4>Gate 4</h4>
+        <p>How to integrate qual + quant findings in discussion?</p>
+      </div>
+      <div class="gate">
+        <h4>Gate 5</h4>
+        <p>Who writes what? Final chapter ownership and review process?</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="cta-label">Full Document</div>
+    <a href="OL652E_thesis-proposal.html" class="cta-btn">
+      Read the Research Proposal <span class="arrow-icon">&rarr;</span>
+    </a>
+    <div style="height: 16px;"></div>
+    <a href="OL652E_leverage-points-staircase.html" class="cta-btn" style="border-color: var(--sage); color: var(--sage-deep); background: linear-gradient(135deg, var(--sage-light), #e5efe6);" onmouseover="this.style.borderColor='var(--sage-deep)'; this.style.transform='translateY(-1px)'; this.style.boxShadow='0 4px 16px rgba(139,170,142,0.15)';" onmouseout="this.style.borderColor='var(--sage)'; this.style.transform='none'; this.style.boxShadow='none';">
+      Explore 12 Leverage Points <span class="arrow-icon">&rarr;</span>
+    </a>
+    <div class="cta-meta">
+      OL652E-US002 Research Proposal &middot; Maria Cecilia Espina &middot; 27 March 2026
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

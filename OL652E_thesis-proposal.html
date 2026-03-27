@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Research Proposal -- Imagination, AI & Leverage Depth</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #faf8f5;
+    --warm-white: #f5f0eb;
+    --blush: #f2e4dc;
+    --blush-light: #faf3ef;
+    --rose: #c9828e;
+    --rose-deep: #a8636f;
+    --rose-muted: #d4a0a7;
+    --sage: #8baa8e;
+    --sage-deep: #5e7d61;
+    --sage-light: #e8f0e8;
+    --lavender: #b8a9d4;
+    --lavender-deep: #8b7ab5;
+    --lavender-light: #f0ecf7;
+    --mauve: #c4a7b5;
+    --mauve-deep: #9e7a8e;
+    --gold: #c9a96e;
+    --gold-deep: #a8864d;
+    --gold-light: #f7f0e3;
+    --terracotta: #c4897a;
+    --terracotta-deep: #a86b5c;
+    --ink: #2d2a26;
+    --ink-light: #5a5650;
+    --ink-muted: #8a8580;
+    --ink-faint: #b5b0aa;
+    --border: rgba(45, 42, 38, 0.08);
+    --border-med: rgba(45, 42, 38, 0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, system-ui, sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    font-weight: 400;
+    font-size: 15px;
+    line-height: 1.7;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 80px 48px 120px;
+  }
+
+  /* ─── Cover block ─── */
+  .cover {
+    text-align: center;
+    margin-bottom: 72px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--border);
+  }
+  .cover .institution {
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    margin-bottom: 8px;
+  }
+  .cover .department {
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    margin-bottom: 4px;
+  }
+  .cover .programme {
+    font-size: 0.72rem;
+    color: var(--ink-faint);
+    margin-bottom: 40px;
+  }
+  .cover h1 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 2.2rem;
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    color: var(--ink);
+    margin-bottom: 12px;
+  }
+  .cover .subtitle {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--ink-muted);
+    margin-bottom: 40px;
+  }
+  .cover .rule {
+    width: 56px;
+    height: 1px;
+    background: var(--rose-muted);
+    margin: 0 auto 36px;
+  }
+  .cover-meta {
+    font-size: 0.72rem;
+    color: var(--ink-light);
+    line-height: 1.8;
+  }
+  .cover-meta .label {
+    color: var(--ink-muted);
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    display: block;
+    margin-top: 12px;
+  }
+
+  /* ─── Back link ─── */
+  .back-link {
+    display: inline-block;
+    font-size: 0.75rem;
+    color: var(--rose-deep);
+    text-decoration: none;
+    margin-bottom: 40px;
+    letter-spacing: 0.02em;
+    transition: color 0.2s ease;
+  }
+  .back-link:hover { color: var(--rose); }
+  .back-link .arrow { margin-right: 6px; }
+
+  /* ─── Table of Contents ─── */
+  .toc {
+    background: var(--blush-light);
+    border: 1px solid rgba(201,130,142,0.15);
+    border-radius: 10px;
+    padding: 28px 32px;
+    margin-bottom: 56px;
+  }
+  .toc-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--rose-deep);
+    margin-bottom: 14px;
+    letter-spacing: 0.04em;
+  }
+  .toc ol {
+    list-style: none;
+    padding: 0;
+    counter-reset: toc;
+  }
+  .toc li {
+    counter-increment: toc;
+    padding: 4px 0;
+  }
+  .toc li::before {
+    content: counter(toc) ".";
+    color: var(--rose-muted);
+    font-size: 0.78rem;
+    margin-right: 8px;
+    font-weight: 500;
+  }
+  .toc a {
+    font-size: 0.78rem;
+    color: var(--ink-light);
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+  .toc a:hover { color: var(--rose-deep); }
+  .toc .sub {
+    padding-left: 22px;
+  }
+  .toc .sub::before {
+    content: counter(toc, lower-alpha) ".";
+  }
+
+  /* ─── Section headings ─── */
+  .section-num {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--rose-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  h2 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 24px;
+    letter-spacing: -0.005em;
+  }
+  h3 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-top: 36px;
+    margin-bottom: 16px;
+  }
+
+  /* ─── Body text ─── */
+  .body-text {
+    margin-bottom: 48px;
+  }
+  .body-text p {
+    margin-bottom: 16px;
+    color: var(--ink-light);
+  }
+  .body-text p:last-child { margin-bottom: 0; }
+
+  /* ─── Callout (purpose statement) ─── */
+  .purpose {
+    background: linear-gradient(135deg, #f2e4dc, #f0ecf7);
+    border: 2px solid var(--rose-muted);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin: 32px 0;
+  }
+  .purpose .label {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--rose-deep);
+    margin-bottom: 8px;
+  }
+  .purpose p {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1rem;
+    font-style: italic;
+    line-height: 1.65;
+    color: var(--ink-light);
+  }
+
+  /* ─── RQ boxes ─── */
+  .rq-block {
+    background: var(--lavender-light);
+    border: 1px solid rgba(184,169,212,0.22);
+    border-radius: 10px;
+    padding: 22px 26px;
+    margin: 24px 0;
+  }
+  .rq-block .rq-label {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--lavender-deep);
+    margin-bottom: 6px;
+  }
+  .rq-block p {
+    font-size: 0.85rem;
+    color: var(--ink-light);
+    line-height: 1.6;
+  }
+
+  .rq-block.sage {
+    background: var(--sage-light);
+    border-color: rgba(139,170,142,0.22);
+  }
+  .rq-block.sage .rq-label { color: var(--sage-deep); }
+
+  /* ─── Research plan table ─── */
+  .plan-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 0.8rem;
+  }
+  .plan-table th {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-weight: 600;
+    font-size: 0.78rem;
+    letter-spacing: 0.04em;
+    color: var(--gold-deep);
+    text-align: left;
+    padding: 10px 16px;
+    border-bottom: 2px solid rgba(201,169,110,0.3);
+    background: rgba(201,169,110,0.06);
+  }
+  .plan-table td {
+    padding: 10px 16px;
+    color: var(--ink-light);
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  .plan-table tr:last-child td { border-bottom: none; }
+
+  /* ─── References ─── */
+  .references {
+    margin-top: 56px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+  .references h2 { font-size: 1.3rem; }
+  .ref-list {
+    list-style: none;
+    padding: 0;
+  }
+  .ref-list li {
+    font-size: 0.78rem;
+    color: var(--ink-light);
+    line-height: 1.65;
+    margin-bottom: 12px;
+    padding-left: 28px;
+    text-indent: -28px;
+  }
+  .ref-list a {
+    color: var(--lavender-deep);
+    text-decoration: none;
+    word-break: break-all;
+  }
+  .ref-list a:hover { text-decoration: underline; }
+
+  /* ─── Footer ─── */
+  .page-footer {
+    text-align: center;
+    margin-top: 64px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+  }
+  .page-footer a {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.85rem;
+    color: var(--rose-deep);
+    text-decoration: none;
+    letter-spacing: 0.02em;
+    transition: color 0.2s ease;
+  }
+  .page-footer a:hover { color: var(--rose); }
+  .page-footer .arrow { margin-left: 6px; }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 600px) {
+    .page { padding: 40px 24px 80px; }
+    .cover h1 { font-size: 1.7rem; }
+    h2 { font-size: 1.3rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <a href="index.html" class="back-link"><span class="arrow">&larr;</span> Back to Architecture</a>
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="institution">Malmo University</div>
+    <div class="department">Culture and Society &middot; Urban Studies</div>
+    <div class="programme">Masters Programme Leadership for Sustainability (SALSU)</div>
+
+    <h1>Imagining Beyond Parameters</h1>
+    <p class="subtitle">AI, Futures Consciousness, and Deeper Sustainability Interventions in Nordic SMEs</p>
+
+    <div class="rule"></div>
+
+    <div class="cover-meta">
+      <span class="label">Course</span>
+      Leadership and Organisation for Sustainability -- Research Methods-VT26
+
+      <span class="label">Examination</span>
+      OL652E-US002 Assignments | Research proposal
+
+      <span class="label">Examination type & date</span>
+      1st re-exam | 27 March 2026
+
+      <span class="label">Student</span>
+      Maria Cecilia Espina
+
+      <span class="label">Responsible Teacher</span>
+      Gustav Hagg
+    </div>
+  </div>
+
+  <!-- TOC -->
+  <div class="toc">
+    <div class="toc-title">Contents</div>
+    <ol>
+      <li><a href="#background">Background</a></li>
+      <li><a href="#previous">Previous Studies</a></li>
+      <li><a href="#methods">Methods and Potential Research Questions</a></li>
+      <li><a href="#contribution">Practical Contribution</a></li>
+      <li><a href="#references">References</a></li>
+    </ol>
+  </div>
+
+  <!-- 1. BACKGROUND -->
+  <div id="background">
+    <div class="section-num">Section 1</div>
+    <h2>Background</h2>
+    <div class="body-text">
+      <p>Nordic small and medium-sized enterprises (SMEs) are central to the sustainability transition. Constituting 99.9% of all enterprises and contributing around 40% of value-added in Sweden alone, they are indispensable actors for advancing the Sustainable Development Goals (Tsvetkova et al., 2020). Yet their sustainability efforts remain largely surface-level, clustering around energy monitoring and compliance rather than engaging with root causes to redesign business models or relationships with ecological systems (Abson et al., 2017; Tsvetkova et al., 2020). The emerging adoption of artificial intelligence (AI) reinforces this pattern. AI-based solutions predominantly serve this shallow orientation by automating tasks, optimising operations, and reducing costs rather than helping leaders envision what could be fundamentally different (Badghish & Soomro, 2024).</p>
+
+      <p>Fuller (1968) anticipated this challenge, arguing that humanity's survival depends on comprehensively anticipatory design science to build fundamentally different solutions. Whether emerging AI solutions are used to imagine new systemic possibilities or merely to reinforce existing efficiencies depends on the orientations of the leaders who deploy them. Currently, AI adoption patterns show a shallow orientation, as they are primarily driven by desires for operational and economic efficiency gains (Badghish & Soomro, 2024). The leverage points framework developed by Meadows (1999) helps explain this pattern by identifying twelve places to intervene in a complex system, ordered by their potential to create transformative change. Shallow leverage points target parameters and material flows, improving efficiency without altering the system's overall trajectory (Abson et al., 2017; Meadows, 1999).</p>
+
+      <p>According to Donella Meadows (1999), deep leverage points target the rules, goals, and paradigms from which systems arise, enabling genuine structural transformation. Abson et al. (2017) demonstrated that sustainability interventions overwhelmingly cluster at shallow leverage points and condensed Meadows' twelve points into four system characteristics: parameters, feedback, design, and intent. This classification has been successfully operationalised for empirical research to analyze interactions across levels through "chains of leverage" (Riechers et al., 2022). The critical question is not whether AI can serve sustainability but whether sustainability leaders can use AI to intervene beyond parameters to impact the deeper design and intent of our systems.</p>
+
+      <p>This study proposes that imagination is the missing variable. Ahvenharju et al. (2018) conceptualised Futures Consciousness (FC) as a multidimensional psychological capacity comprising time perspective, agency beliefs, openness to alternatives, systems perception, and concern for others. Lalot et al. (2020) validated a psychometric instrument for FC across three European languages, demonstrating structural reliability and predictive validity for sustainability-related engagement. Fischer and Riechers (2019) argued that leveraging deeper system points requires new ways of perceiving systems, capacities that map closely onto FC's dimensions. No study has directly tested whether FC predicts the leverage depth of sustainability interventions, yet the foundational pieces are in place: a validated measure of imaginative capacity (Lalot et al., 2020), an operationalised framework for classifying intervention depth (Riechers et al., 2022), and a theoretical argument connecting the two (Fischer & Riechers, 2019). If FC enables the cognitive capacity to imagine beyond efficiency, then AI tools that amplify this imagination could help leaders target deeper leverage points (Badghish & Soomro, 2024).</p>
+
+      <p>Uhl-Bien and Arena's (2017) complexity leadership framework distinguishes administrative leadership, which manages existing structures, from enabling leadership, which creates conditions for adaptive responses to emerge. Deploying AI for parameter-level sustainability is administrative work. Using AI to reimagine business models and value systems requires enabling leadership that fosters emergence, which aligns with what Gopel (2016) described as transformative capacity and paradigm shifts essential for sustainability transitions.</p>
+
+      <p>The Nordic SME context is particularly significant because SME managers lack the dedicated specialist departments of large corporations and rely heavily on external tools to shape strategic responses (Neirotti et al., 2018). This creates a leverage gap, where the institutional environment demands transformation yet equips leaders primarily for optimisation. Understanding how some leaders bridge this gap through the interplay of imagination and technology could inform both policy and practice, contributing to SDG 9 by investigating how innovation targets systemic transformation and to SDG 4 by identifying imaginative competencies needed in an AI-mediated landscape (United Nations, 2015; Wiek et al., 2011).</p>
+
+      <div class="purpose">
+        <div class="label">Purpose</div>
+        <p>This study investigates how Nordic SME sustainability leaders use imagination and AI. It seeks to understand how they create pathways toward deeper sustainability interventions. The research explores the practices through which leaders deploy AI tools. It asks how they move beyond parameter-level optimisation toward systemic redesign. Finally, it explores the association between futures consciousness, AI use patterns, and the leverage depth of sustainability initiatives.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. PREVIOUS STUDIES -->
+  <div id="previous">
+    <div class="section-num">Section 2</div>
+    <h2>Previous Studies</h2>
+    <div class="body-text">
+      <p>Research on AI, imagination, and sustainability transformation spans several largely isolated literatures. This section reviews six key studies and positions the present study in relation to them.</p>
+
+      <p>Badghish and Soomro (2024) investigated predictors of AI adoption for sustainable business performance in SMEs using the Technology-Organization-Environment framework. Their results showed that relative advantage, compatibility, government support, market demand, and sustainable human capital predicted adoption. However, they operationalised sustainable performance primarily as economic and operational efficiency, what Abson et al. (2017) would classify as the shallowest leverage points. The present study builds on their methodology but extends the dependent variable to systemic leverage depth.</p>
+
+      <p>Neirotti et al. (2018) surveyed 284 Italian SMEs and established that ICT capability development depends on the combined effect of firm size and competitive environment. Neither this nor Badghish and Soomro's (2024) study considered whether leaders' imaginative capacities shaped technology deployment. The present study addresses this gap directly.</p>
+
+      <p>Lalot et al. (2020) developed and validated the Futures Consciousness Scale across three European languages (n = 1,301), using exploratory and confirmatory factor analyses. They demonstrated that the five FC dimensions form a reliable construct and that higher FC predicts engagement with future oriented social behaviours such as pro-environmental and civic actions. The present study uses their instrument to measure FC in Nordic SME leaders.</p>
+
+      <p>Abson et al. (2017) aggregated Meadows' twelve leverage points into four tractable levels: parameters, feedback, design, and intent, arguing that sustainability interventions overwhelmingly cluster at shallow leverage points. This conceptual foundation grounds the present study's investigation of what enables leaders to intervene at deeper levels.</p>
+
+      <p>Riechers et al. (2022) operationalised the leverage points perspective for empirical research, introducing "chains of leverage" analysis to understand how interventions interact across systemic depths. The present study applies their framework for coding qualitative data and constructing the survey's dependent variable.</p>
+
+      <p>Fischer and Riechers (2019) argued that leveraging deep system points requires bridging causal and teleological explanations and engaging with human intent, paradigms, and worldviews. This theoretical argument connects leverage depth to cognitive capacities and directly informs the hypothesis that futures consciousness mediates the relationship between AI use and leverage depth.</p>
+
+      <p>Collectively, these studies establish that SME AI adoption is shaped by environmental and organisational factors (Badghish & Soomro, 2024; Neirotti et al., 2018), that FC predicts sustainability engagement (Lalot et al., 2020; Lalot et al., 2021), that interventions cluster at shallow leverage points (Abson et al., 2017), and that deeper intervention requires different cognitive capacities (Fischer & Riechers, 2019). What remains unexamined is whether leaders with stronger futures consciousness use AI differently, and whether this manifests as interventions at deeper leverage points.</p>
+    </div>
+  </div>
+
+  <!-- 3. METHODS -->
+  <div id="methods">
+    <div class="section-num">Section 3</div>
+    <h2>Methods and Potential Research Questions</h2>
+    <div class="body-text">
+      <p>This topic can be studied from both a qualitative and quantitative perspective. Below, each perspective is presented with two research questions, methods for data gathering and data analysis, and an overview of the research process.</p>
+
+      <h3>3.1. Qualitative Perspective</h3>
+
+      <div class="rq-block sage">
+        <div class="rq-label">RQ1</div>
+        <p>How do Nordic SME sustainability leaders use AI tools? How are these tools used in the process of envisioning and implementing sustainability interventions at deeper leverage points?</p>
+      </div>
+      <div class="rq-block sage">
+        <div class="rq-label">RQ2</div>
+        <p>What distinguishes the imagination-AI interaction in SMEs that operate at deeper leverage points (design or intent level)? How does this differ from SMEs that use AI but remain at parameter-level interventions?</p>
+      </div>
+
+      <p><strong>Data gathering.</strong> A multiple case study will examine four to six Nordic SMEs selected through purposive sampling for demonstrated engagement with sustainability at deeper leverage points combined with active AI tool use, identified through sustainability awards, B Corp databases, and network recommendations. A screening questionnaire will map interventions to the four leverage levels (Riechers et al., 2022). Replication logic will guide selection: two to three cases at deeper leverage points and two to three representing surface-level AI adoption, enabling cross-case comparison (Yin, 2018). Data will be gathered through document analysis and semi-structured interviews (Tsvetkova et al., 2020).</p>
+
+      <p><strong>Data analysis.</strong> Researchers will conduct a thematic analysis. This process will follow a rigorous six-phase approach (Braun & Clarke, 2006). The analysis will combine both deductive and inductive coding (Braun & Clarke, 2006). Deductive codes will be drawn from the four leverage levels and the five Futures Consciousness (FC) dimensions (Ahvenharju et al., 2018; Riechers et al., 2022). Inductive coding will capture emergent themes directly from the data (Braun & Clarke, 2006). Cross-case analysis will identify patterns. It will specifically explore how imagination-AI interactions differ between cases operating at deeper versus shallower leverage points.</p>
+
+      <h3>3.2. Quantitative Perspective</h3>
+
+      <div class="rq-block">
+        <div class="rq-label">RQ3</div>
+        <p>To what extent are futures consciousness and the leverage depth of AI use associated with the leverage depth of Nordic SME sustainability initiatives? Does this hold when controlling for firm size, sector, and country?</p>
+      </div>
+      <div class="rq-block">
+        <div class="rq-label">RQ4</div>
+        <p>Do specific dimensions of futures consciousness (e.g., openness to alternatives, systems perception) show stronger associations with leverage depth than others? Does the combination of high FC and deep AI use explain additional variance beyond their independent effects?</p>
+      </div>
+
+      <p><strong>Data gathering.</strong> A cross-sectional online survey will target sustainability managers in Nordic SMEs. The target sample is 100 to 150 respondents. The survey instrument will include the validated 20-item Futures Consciousness Scale (Lalot et al., 2020). This scale measures five dimensions: time perspective, agency beliefs, openness to alternatives, systems perception, and concern for others (Ahvenharju et al., 2018; Lalot et al., 2020). The scale has established psychometric properties and has also demonstrated stability across crisis conditions during the COVID-19 pandemic (Lalot et al., 2021). The survey also captures demographics, AI use frequency, and vignettes mapping leverage depth. Following Boateng et al. (2018), five to eight SME managers will evaluate the instrument's measurement validity through cognitive pilot interviews.</p>
+
+      <p><strong>Data analysis.</strong> Descriptive statistics will map the distribution of FC scores, AI use patterns, and leverage depth across the sample. Correlation analysis will test the associations between FC dimensions, AI use leverage depth, and initiative leverage depth. Hierarchical regression will test whether FC and AI use patterns are associated with leverage depth after controlling for firm size, sector, and country.</p>
+
+      <h3>3.3. Research Plan</h3>
+
+      <table class="plan-table">
+        <thead>
+          <tr><th>Phase</th><th>Activity</th><th>Timeline</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>1</td><td>Literature review, interview guide / survey instrument</td><td>Weeks 1-2</td></tr>
+          <tr><td>2</td><td>Case recruitment, pilot survey (n = 5-8)</td><td>Weeks 2-3</td></tr>
+          <tr><td>3</td><td>Interviews or survey distribution</td><td>Weeks 4-7</td></tr>
+          <tr><td>4</td><td>Thematic analysis or statistical analysis</td><td>Weeks 7-8</td></tr>
+          <tr><td>5</td><td>Writing, revision, and submission</td><td>Weeks 8-10</td></tr>
+        </tbody>
+      </table>
+
+      <p>Ethical considerations follow Swedish Research Council guidelines (Vetenskapsradet, 2017): informed consent, pseudonymised recordings, anonymous surveys, and encrypted university data storage.</p>
+    </div>
+  </div>
+
+  <!-- 4. PRACTICAL CONTRIBUTION -->
+  <div id="contribution">
+    <div class="section-num">Section 4</div>
+    <h2>Practical Contribution</h2>
+    <div class="body-text">
+      <p>For Nordic SME sustainability managers, the findings would shift a familiar question. Instead of asking "Does this tool improve our sustainability performance?", leaders could ask, "Is this tool helping me optimise what already exists, or helping me imagine and redesign what could?" The case studies would offer concrete models of how leaders combine imagination with AI in practice. The survey findings would reveal which dimensions of futures consciousness associate most strongly with deeper intervention, giving leaders a clearer sense of where to develop their own capacities.</p>
+
+      <p>For policymakers and industry associations, the study surfaces conditions under which AI becomes a tool for transformation rather than optimisation, with direct implications for how sustainability training, AI adoption guidance, and innovation support are designed across the Nordic region.</p>
+
+      <p>For sustainability researchers, the study moves the leverage points framework (Meadows, 1999; Riechers et al., 2022) from diagnosing where interventions land to understanding what enables leaders to go deeper. It also bridges futures consciousness research (Ahvenharju et al., 2018) with technology adoption literature, asking how a cognitive capacity studied at the individual level plays out in organisational practice when mediated by AI.</p>
+
+      <p>More broadly, the study reframes the AI-sustainability relationship. The question is not what AI tools can do, but what human imagination enables leaders to do with them. This contributes to SDG 9 by investigating how innovation targets systemic transformation and to SDG 4 by identifying imaginative competencies needed in an AI-mediated landscape (United Nations, 2015; Wiek et al., 2011).</p>
+    </div>
+  </div>
+
+  <!-- REFERENCES -->
+  <div id="references" class="references">
+    <h2>References</h2>
+    <ul class="ref-list">
+      <li>Abson, D. J., Fischer, J., Leventon, J., Newig, J., Schomerus, T., Vilsmaier, U., von Wehrden, H., Abernethy, P., Ives, C. D., Jager, N. W., & Lang, D. J. (2017). Leverage points for sustainability transformation. <em>Ambio, 46</em>(1), 30-39. <a href="https://doi.org/10.1007/s13280-016-0800-y">https://doi.org/10.1007/s13280-016-0800-y</a></li>
+      <li>Ahvenharju, S., Minkkinen, M., & Lalot, F. (2018). The five dimensions of Futures Consciousness. <em>Futures, 104</em>, 1-13. <a href="https://doi.org/10.1016/j.futures.2018.06.010">https://doi.org/10.1016/j.futures.2018.06.010</a></li>
+      <li>Badghish, S., & Soomro, Y. A. (2024). Artificial intelligence adoption by SMEs to achieve sustainable business performance. <em>Sustainability, 16</em>(5), 1864. <a href="https://doi.org/10.3390/su16051864">https://doi.org/10.3390/su16051864</a></li>
+      <li>Boateng, G. O., Neilands, T. B., Frongillo, E. A., Melgar-Quinonez, H. R., & Young, S. L. (2018). Best practices for developing and validating scales for health, social, and behavioral research: A primer. <em>Frontiers in Public Health, 6</em>, 149. <a href="https://doi.org/10.3389/fpubh.2018.00149">https://doi.org/10.3389/fpubh.2018.00149</a></li>
+      <li>Braun, V., & Clarke, V. (2006). Using thematic analysis in psychology. <em>Qualitative Research in Psychology, 3</em>(2), 77-101. <a href="https://doi.org/10.1191/1478088706qp063oa">https://doi.org/10.1191/1478088706qp063oa</a></li>
+      <li>Fischer, J., & Riechers, M. (2019). A leverage points perspective on sustainability. <em>People and Nature, 1</em>(1), 115-120. <a href="https://doi.org/10.1002/pan3.13">https://doi.org/10.1002/pan3.13</a></li>
+      <li>Fuller, R. B. (1968). What quality of environment do we want? <em>Archives of Environmental Health: An International Journal, 16</em>(5), 685-699. <a href="https://doi.org/10.1080/00039896.1968.10665129">https://doi.org/10.1080/00039896.1968.10665129</a></li>
+      <li>Gopel, M. (2016). <em>The great mindshift: How a new economic paradigm and sustainability transformations go hand in hand.</em> Springer. <a href="https://doi.org/10.1007/978-3-319-43766-8">https://doi.org/10.1007/978-3-319-43766-8</a></li>
+      <li>Lalot, F., Abrams, D., Ahvenharju, S., & Minkkinen, M. (2021). Being future-conscious during a global crisis: The protective effect of heightened Futures Consciousness in the COVID-19 pandemic. <em>Personality and Individual Differences, 178</em>, 110862. <a href="https://doi.org/10.1016/j.paid.2021.110862">https://doi.org/10.1016/j.paid.2021.110862</a></li>
+      <li>Lalot, F., Ahvenharju, S., Minkkinen, M., & Wensing, E. (2020). Aware of the future? Development and validation of the Futures Consciousness Scale. <em>European Journal of Psychological Assessment, 36</em>(5), 874-888. <a href="https://doi.org/10.1027/1015-5759/a000565">https://doi.org/10.1027/1015-5759/a000565</a></li>
+      <li>Meadows, D. H. (1999). <em>Leverage points: Places to intervene in a system.</em> The Sustainability Institute.</li>
+      <li>Neirotti, P., Raguseo, E., & Paolucci, E. (2018). How SMEs develop ICT-based capabilities in response to their environment. <em>Journal of Enterprise Information Management, 31</em>(1), 10-37. <a href="https://doi.org/10.1108/JEIM-09-2016-0158">https://doi.org/10.1108/JEIM-09-2016-0158</a></li>
+      <li>Riechers, M., Fischer, J., Manlosa, A. O., Ortiz-Przychodzka, S., & Sala, J. E. (2022). Operationalising the leverage points perspective for empirical research. <em>Current Opinion in Environmental Sustainability, 57</em>, 101206. <a href="https://doi.org/10.1016/j.cosust.2022.101206">https://doi.org/10.1016/j.cosust.2022.101206</a></li>
+      <li>Tsvetkova, D., Bengtsson, E., & Durst, S. (2020). Maintaining sustainable practices in SMEs: Insights from Sweden. <em>Sustainability, 12</em>(24), 10242. <a href="https://doi.org/10.3390/su122410242">https://doi.org/10.3390/su122410242</a></li>
+      <li>Uhl-Bien, M., & Arena, M. (2017). Complexity leadership: Enabling people and organizations for adaptability. <em>Organizational Dynamics, 46</em>(1), 9-20. <a href="https://doi.org/10.1016/j.orgdyn.2016.12.001">https://doi.org/10.1016/j.orgdyn.2016.12.001</a></li>
+      <li>United Nations. (2015). <em>Transforming our world: The 2030 Agenda for Sustainable Development.</em> A/RES/70/1. <a href="https://sdgs.un.org/2030agenda">https://sdgs.un.org/2030agenda</a></li>
+      <li>Vetenskapsradet. (2017). <em>God forskningssed</em> [Good research practice]. <a href="https://www.vr.se/english/analysis/reports/our-reports/2017-08-31-good-research-practice-2017.html">https://www.vr.se/english/analysis/reports/our-reports/2017-08-31-good-research-practice-2017.html</a></li>
+      <li>Wiek, A., Withycombe, L., & Redman, C. L. (2011). Key competencies in sustainability: A reference framework for academic program development. <em>Sustainability Science, 6</em>(2), 203-218.</li>
+      <li>Yin, R. K. (2018). <em>Case study research and applications: Design and methods</em> (6th ed.). SAGE.</li>
+    </ul>
+  </div>
+
+  <!-- Footer -->
+  <div class="page-footer">
+    <a href="index.html">View Thesis Architecture<span class="arrow">&rarr;</span></a>
+  </div>
+
+</div>
+
+</body>
+</html>
