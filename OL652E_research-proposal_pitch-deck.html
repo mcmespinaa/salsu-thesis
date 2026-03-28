@@ -1,0 +1,1889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Imagining Beyond Parameters — Thesis Pitch Deck</title>
+<style>
+  :root {
+    --navy: #0a1628;
+    --navy-mid: #131f38;
+    --navy-light: #1a2a4a;
+    --indigo: #2a3f6f;
+    --gold: #c8a44e;
+    --gold-light: #dfc173;
+    --gold-pale: #f0dfa0;
+    --cream: #f5f0e6;
+    --cream-light: #faf7f0;
+    --white: #ffffff;
+    --text-dark: #0a1628;
+    --text-mid: #3a4a6a;
+    --text-light: #8a95aa;
+    --serif: 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, serif;
+    --sans: 'Avenir Next', Avenir, 'Segoe UI', system-ui, sans-serif;
+  }
+
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory;
+  }
+
+  body {
+    background: var(--navy);
+    color: var(--cream);
+    font-family: var(--sans);
+    overflow-x: hidden;
+  }
+
+  /* ─── Navigation ─── */
+  .nav {
+    position: fixed;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .nav-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    border: 1.5px solid rgba(200, 164, 78, 0.4);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    position: relative;
+  }
+
+  .nav-dot:hover,
+  .nav-dot.active {
+    background: var(--gold);
+    border-color: var(--gold);
+    box-shadow: 0 0 12px rgba(200, 164, 78, 0.3);
+  }
+
+  .nav-dot::after {
+    content: attr(data-label);
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.65rem;
+    font-family: var(--sans);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--gold);
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+
+  .nav-dot:hover::after { opacity: 1; }
+
+  /* ─── Slide Base ─── */
+  .slide {
+    width: 100vw;
+    min-height: 100vh;
+    scroll-snap-align: start;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .slide-inner {
+    width: 100%;
+    max-width: 1200px;
+    padding: 4rem 3rem;
+    position: relative;
+    z-index: 2;
+  }
+
+  .slide-number {
+    font-family: var(--serif);
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    opacity: 0.7;
+  }
+
+  /* ─── Geometric Backgrounds ─── */
+  .geo-grid {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    opacity: 0.04;
+    background-image:
+      linear-gradient(rgba(200, 164, 78, 0.3) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(200, 164, 78, 0.3) 1px, transparent 1px);
+    background-size: 80px 80px;
+  }
+
+  .geo-circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(200, 164, 78, 0.08);
+  }
+
+  /* ─── Animations ─── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes drawLine {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+
+  @keyframes pulseGlow {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 0.6; }
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+  }
+
+  @keyframes expandWidth {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+
+  .animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .delay-1 { transition-delay: 0.15s; }
+  .delay-2 { transition-delay: 0.3s; }
+  .delay-3 { transition-delay: 0.45s; }
+  .delay-4 { transition-delay: 0.6s; }
+  .delay-5 { transition-delay: 0.75s; }
+
+  /* ═══════════════════════════════════════════
+     SLIDE 1 — TITLE
+     ═══════════════════════════════════════════ */
+  .slide-title {
+    background: var(--navy);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+
+  .slide-title .geo-grid { opacity: 0.03; }
+
+  .title-bg-layers {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .title-bg-layers .layer {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(200, 164, 78, 0.06);
+    animation: pulseGlow 6s ease-in-out infinite;
+  }
+
+  .title-bg-layers .layer:nth-child(1) {
+    width: 800px; height: 800px;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    animation-delay: 0s;
+  }
+  .title-bg-layers .layer:nth-child(2) {
+    width: 600px; height: 600px;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    animation-delay: 1s;
+  }
+  .title-bg-layers .layer:nth-child(3) {
+    width: 400px; height: 400px;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    animation-delay: 2s;
+  }
+  .title-bg-layers .layer:nth-child(4) {
+    width: 200px; height: 200px;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    animation-delay: 3s;
+  }
+
+  .title-content {
+    text-align: center;
+    position: relative;
+    z-index: 2;
+    max-width: 900px;
+    padding: 2rem;
+  }
+
+  .title-eyebrow {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 2.5rem;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.3s forwards;
+  }
+
+  .title-main {
+    font-family: var(--serif);
+    font-size: clamp(2.4rem, 5vw, 3.8rem);
+    font-weight: 300;
+    line-height: 1.2;
+    color: var(--cream);
+    margin-bottom: 1rem;
+    opacity: 0;
+    animation: fadeUp 1.2s ease 0.6s forwards;
+  }
+
+  .title-main em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+
+  .title-separator {
+    width: 60px;
+    height: 1px;
+    background: var(--gold);
+    margin: 2rem auto;
+    opacity: 0;
+    animation: fadeIn 1s ease 1.2s forwards;
+  }
+
+  .title-meta {
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    font-weight: 300;
+    color: var(--text-light);
+    letter-spacing: 0.06em;
+    line-height: 1.8;
+    opacity: 0;
+    animation: fadeUp 1s ease 1.4s forwards;
+  }
+
+  .title-meta strong {
+    color: var(--cream);
+    font-weight: 400;
+  }
+
+  /* ═══════════════════════════════════════════
+     SLIDE 2 — THE PROBLEM
+     ═══════════════════════════════════════════ */
+  .slide-problem { background: var(--cream-light); color: var(--text-dark); }
+
+  .problem-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+
+  .problem-left h2 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 400;
+    line-height: 1.2;
+    color: var(--navy);
+    margin-bottom: 1.5rem;
+  }
+
+  .problem-left h2 span {
+    color: var(--gold);
+    font-style: italic;
+  }
+
+  .problem-intro {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text-mid);
+    margin-bottom: 2rem;
+  }
+
+  .stat-row {
+    display: flex;
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .stat-block {
+    flex: 1;
+  }
+
+  .stat-number {
+    font-family: var(--serif);
+    font-size: 2.4rem;
+    font-weight: 600;
+    color: var(--navy);
+    line-height: 1;
+  }
+
+  .stat-number span { color: var(--gold); }
+
+  .stat-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-light);
+    margin-top: 0.4rem;
+  }
+
+  .problem-right {
+    position: relative;
+  }
+
+  .problem-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .problem-card {
+    background: white;
+    border-radius: 2px;
+    padding: 1.25rem 1.5rem;
+    border-left: 3px solid var(--navy);
+    box-shadow: 0 2px 20px rgba(10, 22, 40, 0.06);
+    transition: all 0.4s ease;
+  }
+
+  .problem-card:hover {
+    border-left-color: var(--gold);
+    transform: translateX(4px);
+    box-shadow: 0 4px 30px rgba(10, 22, 40, 0.1);
+  }
+
+  .problem-card .card-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .problem-card p {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: var(--text-mid);
+  }
+
+  .problem-question {
+    margin-top: 2rem;
+    padding: 1.5rem;
+    background: var(--navy);
+    border-radius: 2px;
+    position: relative;
+  }
+
+  .problem-question p {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--cream);
+    line-height: 1.6;
+  }
+
+  .problem-question::before {
+    content: '?';
+    position: absolute;
+    top: -0.8rem;
+    right: 1.5rem;
+    font-family: var(--serif);
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    opacity: 0.3;
+  }
+
+  /* ═══════════════════════════════════════════
+     SLIDE 3 — THEORETICAL FRAMEWORK
+     ═══════════════════════════════════════════ */
+  .slide-framework {
+    background: var(--navy);
+    position: relative;
+  }
+
+  .framework-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
+  }
+
+  .framework-header h2 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 300;
+    color: var(--cream);
+  }
+
+  .framework-header p {
+    font-size: 0.85rem;
+    color: var(--text-light);
+    margin-top: 0.75rem;
+    letter-spacing: 0.03em;
+  }
+
+  .pillars {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .pillar {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(200, 164, 78, 0.12);
+    border-radius: 2px;
+    padding: 2rem;
+    position: relative;
+    transition: all 0.5s ease;
+  }
+
+  .pillar:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(200, 164, 78, 0.3);
+    transform: translateY(-4px);
+  }
+
+  .pillar-number {
+    font-family: var(--serif);
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--gold);
+    opacity: 0.2;
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    line-height: 1;
+  }
+
+  .pillar-icon {
+    width: 40px;
+    height: 40px;
+    margin-bottom: 1.25rem;
+    position: relative;
+  }
+
+  .pillar-icon svg {
+    width: 100%;
+    height: 100%;
+    stroke: var(--gold);
+    fill: none;
+    stroke-width: 1.5;
+  }
+
+  .pillar h3 {
+    font-family: var(--serif);
+    font-size: 1.15rem;
+    font-weight: 500;
+    color: var(--cream);
+    margin-bottom: 0.4rem;
+  }
+
+  .pillar .pillar-cite {
+    font-size: 0.7rem;
+    color: var(--gold);
+    opacity: 0.7;
+    margin-bottom: 1rem;
+    font-style: italic;
+  }
+
+  .pillar p {
+    font-size: 0.8rem;
+    line-height: 1.65;
+    color: rgba(245, 240, 230, 0.6);
+  }
+
+  .pillar-levels {
+    margin-top: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .level-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.75rem;
+    color: rgba(245, 240, 230, 0.5);
+  }
+
+  .level-bar {
+    height: 3px;
+    border-radius: 1px;
+    background: var(--gold);
+    transition: width 1s ease;
+  }
+
+  .level-item.deep .level-bar { opacity: 1; }
+  .level-item.shallow .level-bar { opacity: 0.3; }
+
+  .pillar-tags {
+    margin-top: 1.25rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .pillar-tag {
+    font-size: 0.65rem;
+    letter-spacing: 0.05em;
+    padding: 0.3rem 0.6rem;
+    border: 1px solid rgba(200, 164, 78, 0.2);
+    border-radius: 1px;
+    color: var(--gold-light);
+    opacity: 0.7;
+  }
+
+  /* ═══════════════════════════════════════════
+     SLIDE 4 — THE GAP
+     ═══════════════════════════════════════════ */
+  .slide-gap {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-mid) 100%);
+  }
+
+  .gap-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .gap-header h2 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 300;
+    color: var(--cream);
+  }
+
+  .convergence-visual {
+    position: relative;
+    padding: 2rem 0;
+  }
+
+  .streams {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .stream {
+    text-align: center;
+    padding: 1.5rem;
+    position: relative;
+  }
+
+  .stream-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 1.5px solid var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1rem;
+    font-family: var(--serif);
+    font-size: 1.3rem;
+    color: var(--gold);
+    background: rgba(200, 164, 78, 0.05);
+  }
+
+  .stream h3 {
+    font-family: var(--serif);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--cream);
+    margin-bottom: 0.5rem;
+  }
+
+  .stream p {
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: rgba(245, 240, 230, 0.5);
+  }
+
+  .stream .stream-cite {
+    font-size: 0.68rem;
+    color: var(--gold);
+    opacity: 0.5;
+    margin-top: 0.5rem;
+    font-style: italic;
+  }
+
+  .convergence-arrows {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .arrow-line {
+    width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold));
+  }
+
+  .arrow-line:last-child {
+    background: linear-gradient(90deg, var(--gold), transparent);
+  }
+
+  .convergence-center {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--gold);
+    box-shadow: 0 0 20px rgba(200, 164, 78, 0.4);
+    animation: pulseGlow 3s ease-in-out infinite;
+  }
+
+  .gap-box {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 2rem;
+    border: 1px solid rgba(200, 164, 78, 0.25);
+    border-radius: 2px;
+    background: rgba(200, 164, 78, 0.03);
+  }
+
+  .gap-box .gap-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+  }
+
+  .gap-box p {
+    font-family: var(--serif);
+    font-size: 1.05rem;
+    font-style: italic;
+    line-height: 1.6;
+    color: var(--cream);
+  }
+
+  /* ═══════════════════════════════════════════
+     SLIDE 5 — CENTRAL PROPOSITION
+     ═══════════════════════════════════════════ */
+  .slide-proposition {
+    background: var(--cream-light);
+    color: var(--text-dark);
+  }
+
+  .proposition-content {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .proposition-quote {
+    font-family: var(--serif);
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 300;
+    font-style: italic;
+    line-height: 1.3;
+    color: var(--navy);
+    margin-bottom: 3rem;
+    position: relative;
+  }
+
+  .proposition-quote span {
+    color: var(--gold);
+    font-weight: 500;
+  }
+
+  .proposition-quote::before,
+  .proposition-quote::after {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    margin: 1.5rem auto;
+  }
+
+  .mediation-model {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+  }
+
+  .model-node {
+    padding: 1rem 1.5rem;
+    border-radius: 2px;
+    text-align: center;
+    min-width: 140px;
+  }
+
+  .model-node.primary {
+    background: var(--navy);
+    color: var(--cream);
+  }
+
+  .model-node.mediator {
+    background: var(--gold);
+    color: var(--navy);
+    position: relative;
+    z-index: 2;
+    box-shadow: 0 4px 30px rgba(200, 164, 78, 0.3);
+  }
+
+  .model-node.outcome {
+    background: var(--indigo);
+    color: var(--cream);
+  }
+
+  .model-node h4 {
+    font-family: var(--serif);
+    font-size: 0.95rem;
+    font-weight: 500;
+    margin-bottom: 0.25rem;
+  }
+
+  .model-node p {
+    font-size: 0.68rem;
+    opacity: 0.7;
+    letter-spacing: 0.03em;
+  }
+
+  .model-arrow {
+    font-size: 1.2rem;
+    color: var(--gold);
+    padding: 0 0.5rem;
+  }
+
+  .proposition-explain {
+    margin-top: 2.5rem;
+    font-size: 0.85rem;
+    line-height: 1.7;
+    color: var(--text-mid);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ═══════════════════════════════════════════
+     SLIDE 6 — RESEARCH DESIGN
+     ═══════════════════════════════════════════ */
+  .slide-design {
+    background: var(--navy);
+  }
+
+  .design-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .design-header h2 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 300;
+    color: var(--cream);
+  }
+
+  .design-header p {
+    color: var(--text-light);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+  }
+
+  .design-split {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 0;
+    align-items: stretch;
+  }
+
+  .design-panel {
+    padding: 2rem;
+    border: 1px solid rgba(200, 164, 78, 0.12);
+    border-radius: 2px;
+  }
+
+  .design-panel.qual { border-right: none; border-radius: 2px 0 0 2px; }
+  .design-panel.quant { border-left: none; border-radius: 0 2px 2px 0; }
+
+  .design-divider {
+    width: 1px;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .design-divider span {
+    background: var(--navy);
+    color: var(--gold);
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    padding: 1rem 0.5rem;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+  }
+
+  .panel-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .panel-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(200, 164, 78, 0.2);
+  }
+
+  .rq-block {
+    margin-bottom: 1.25rem;
+  }
+
+  .rq-tag {
+    font-size: 0.6rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 0.3rem;
+  }
+
+  .rq-text {
+    font-family: var(--serif);
+    font-size: 0.85rem;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--cream);
+    opacity: 0.8;
+  }
+
+  .method-detail {
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid rgba(200, 164, 78, 0.08);
+  }
+
+  .method-row {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.6rem;
+    align-items: baseline;
+  }
+
+  .method-key {
+    font-size: 0.65rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--gold);
+    opacity: 0.6;
+    min-width: 65px;
+    flex-shrink: 0;
+  }
+
+  .method-value {
+    font-size: 0.78rem;
+    color: rgba(245, 240, 230, 0.6);
+    line-height: 1.4;
+  }
+
+  /* ═══════════════════════════════════════════
+     SLIDE 7 — TIMELINE
+     ═══════════════════════════════════════════ */
+  .slide-timeline {
+    background: var(--cream-light);
+    color: var(--text-dark);
+  }
+
+  .timeline-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .timeline-header h2 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 400;
+    color: var(--navy);
+  }
+
+  .timeline-track {
+    position: relative;
+    padding: 0 0 0 1rem;
+  }
+
+  .timeline-track::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--gold), var(--indigo));
+    border-radius: 1px;
+  }
+
+  .timeline-phase {
+    position: relative;
+    padding: 0 0 2.5rem 2.5rem;
+  }
+
+  .timeline-phase:last-child { padding-bottom: 0; }
+
+  .timeline-phase::before {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: 4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--gold);
+    border: 3px solid var(--cream-light);
+  }
+
+  .phase-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .phase-weeks {
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    min-width: 80px;
+  }
+
+  .phase-title {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--navy);
+  }
+
+  .phase-bar {
+    margin-top: 0.5rem;
+    height: 6px;
+    border-radius: 3px;
+    background: linear-gradient(90deg, var(--gold), var(--indigo));
+    opacity: 0.2;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .phase-bar-fill {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, var(--gold), var(--indigo));
+    opacity: 1;
+    transform-origin: left;
+  }
+
+  .phase-desc {
+    font-size: 0.8rem;
+    color: var(--text-mid);
+    margin-top: 0.4rem;
+    line-height: 1.5;
+  }
+
+  .timeline-ethics {
+    margin-top: 2.5rem;
+    padding: 1.25rem 1.5rem;
+    background: white;
+    border-radius: 2px;
+    border-left: 3px solid var(--gold);
+    margin-left: 1rem;
+  }
+
+  .timeline-ethics .ethics-label {
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+  }
+
+  .timeline-ethics p {
+    font-size: 0.8rem;
+    color: var(--text-mid);
+    line-height: 1.6;
+  }
+
+  /* ═══════════════════════════════════════════
+     SLIDE 8 — PRACTICAL CONTRIBUTION
+     ═══════════════════════════════════════════ */
+  .slide-contribution {
+    background: var(--navy);
+  }
+
+  .contribution-header {
+    text-align: center;
+    margin-bottom: 3rem;
+  }
+
+  .contribution-header h2 {
+    font-family: var(--serif);
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 300;
+    color: var(--cream);
+  }
+
+  .audiences {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .audience {
+    padding: 2rem;
+    border: 1px solid rgba(200, 164, 78, 0.1);
+    border-radius: 2px;
+    position: relative;
+    transition: all 0.4s ease;
+  }
+
+  .audience:hover {
+    border-color: rgba(200, 164, 78, 0.3);
+    background: rgba(200, 164, 78, 0.03);
+    transform: translateY(-4px);
+  }
+
+  .audience-icon {
+    font-size: 1.6rem;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .audience h3 {
+    font-family: var(--serif);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--cream);
+    margin-bottom: 0.75rem;
+  }
+
+  .audience p {
+    font-size: 0.8rem;
+    line-height: 1.65;
+    color: rgba(245, 240, 230, 0.55);
+  }
+
+  .audience .shift-quote {
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    background: rgba(200, 164, 78, 0.06);
+    border-left: 2px solid var(--gold);
+    font-family: var(--serif);
+    font-size: 0.8rem;
+    font-style: italic;
+    color: var(--gold-light);
+    line-height: 1.5;
+  }
+
+  /* ═══════════════════════════════════════════
+     SLIDE 9 — THE REFRAME / CLOSING
+     ═══════════════════════════════════════════ */
+  .slide-closing {
+    background: var(--navy);
+    position: relative;
+  }
+
+  .closing-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .closing-bg .ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(200, 164, 78, 0.05);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .closing-bg .ring:nth-child(1) { width: 300px; height: 300px; }
+  .closing-bg .ring:nth-child(2) { width: 500px; height: 500px; }
+  .closing-bg .ring:nth-child(3) { width: 700px; height: 700px; }
+  .closing-bg .ring:nth-child(4) { width: 900px; height: 900px; }
+  .closing-bg .ring:nth-child(5) { width: 1100px; height: 1100px; }
+
+  .closing-content {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+  }
+
+  .closing-quote {
+    font-family: var(--serif);
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 300;
+    line-height: 1.4;
+    color: var(--cream);
+    margin-bottom: 2.5rem;
+  }
+
+  .closing-quote em {
+    color: var(--gold-light);
+    font-style: italic;
+  }
+
+  .sdg-row {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+
+  .sdg-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 1rem;
+    border: 1px solid rgba(200, 164, 78, 0.2);
+    border-radius: 2px;
+  }
+
+  .sdg-num {
+    font-family: var(--serif);
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--gold);
+  }
+
+  .sdg-text {
+    font-size: 0.7rem;
+    color: rgba(245, 240, 230, 0.5);
+    text-align: left;
+    line-height: 1.4;
+    letter-spacing: 0.02em;
+  }
+
+  .closing-separator {
+    width: 40px;
+    height: 1px;
+    background: var(--gold);
+    margin: 2rem auto;
+    opacity: 0.5;
+  }
+
+  .closing-meta {
+    font-family: var(--sans);
+    font-size: 0.75rem;
+    color: var(--text-light);
+    letter-spacing: 0.05em;
+    line-height: 2;
+  }
+
+  .closing-meta strong {
+    color: var(--cream);
+    font-weight: 400;
+  }
+
+  /* ─── Keyboard hint ─── */
+  .key-hint {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+    font-size: 0.6rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(200, 164, 78, 0.3);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    animation: pulseGlow 4s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  .key-hint svg {
+    width: 14px;
+    height: 14px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.5;
+  }
+
+  /* ─── Print / Export ─── */
+  .print-btn {
+    position: fixed;
+    top: 2rem;
+    right: 2rem;
+    z-index: 100;
+    background: rgba(200, 164, 78, 0.1);
+    border: 1px solid rgba(200, 164, 78, 0.2);
+    color: var(--gold);
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.3s ease;
+  }
+
+  .print-btn:hover {
+    background: rgba(200, 164, 78, 0.2);
+    border-color: var(--gold);
+  }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 900px) {
+    .problem-layout { grid-template-columns: 1fr; gap: 2rem; }
+    .pillars { grid-template-columns: 1fr; }
+    .design-split { grid-template-columns: 1fr; gap: 1rem; }
+    .design-divider { display: none; }
+    .design-panel.qual, .design-panel.quant { border-radius: 2px; border: 1px solid rgba(200, 164, 78, 0.12); }
+    .streams { grid-template-columns: 1fr; gap: 1rem; }
+    .audiences { grid-template-columns: 1fr; }
+    .nav { display: none; }
+    .slide-inner { padding: 3rem 1.5rem; }
+    .mediation-model { flex-direction: column; gap: 0.5rem; }
+    .model-arrow { transform: rotate(90deg); }
+    .sdg-row { flex-direction: column; align-items: center; }
+  }
+
+  @media print {
+    html { scroll-snap-type: none; }
+    .slide { min-height: auto; page-break-after: always; padding: 2rem; }
+    .nav, .key-hint, .print-btn { display: none; }
+    body { background: white; color: black; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Navigation Dots -->
+<nav class="nav" id="nav">
+  <button class="nav-dot active" data-slide="0" data-label="Title"></button>
+  <button class="nav-dot" data-slide="1" data-label="Problem"></button>
+  <button class="nav-dot" data-slide="2" data-label="Framework"></button>
+  <button class="nav-dot" data-slide="3" data-label="Gap"></button>
+  <button class="nav-dot" data-slide="4" data-label="Proposition"></button>
+  <button class="nav-dot" data-slide="5" data-label="Design"></button>
+  <button class="nav-dot" data-slide="6" data-label="Timeline"></button>
+  <button class="nav-dot" data-slide="7" data-label="Contribution"></button>
+  <button class="nav-dot" data-slide="8" data-label="Closing"></button>
+</nav>
+
+<!-- Keyboard hint -->
+<div class="key-hint">
+  <svg viewBox="0 0 24 24"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+  Scroll or use arrow keys
+</div>
+
+<!-- Print button -->
+<button class="print-btn" onclick="window.print()">Export PDF</button>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 1 — TITLE
+     ════════════════════════════════════════════ -->
+<section class="slide slide-title" id="slide-0">
+  <div class="geo-grid"></div>
+  <div class="title-bg-layers">
+    <div class="layer"></div>
+    <div class="layer"></div>
+    <div class="layer"></div>
+    <div class="layer"></div>
+  </div>
+  <div class="title-content">
+    <div class="title-eyebrow">Research Proposal &middot; OL652E</div>
+    <h1 class="title-main">
+      Imagining Beyond <em>Parameters</em>
+    </h1>
+    <p class="title-main" style="font-size: clamp(1rem, 2vw, 1.4rem); font-weight: 300; color: rgba(245,240,230,0.6); animation-delay: 0.8s;">
+      AI, Futures Consciousness, and Deeper<br>Sustainability Interventions in Nordic SMEs
+    </p>
+    <div class="title-separator"></div>
+    <div class="title-meta">
+      <strong>Maria Cecilia Espina</strong><br>
+      SALSU Programme &middot; Leadership and Organisation for Sustainability<br>
+      Malm&ouml; University &middot; March 2026
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 2 — THE PROBLEM
+     ════════════════════════════════════════════ -->
+<section class="slide slide-problem" id="slide-1">
+  <div class="slide-inner">
+    <div class="slide-number">01 &mdash; The Problem</div>
+    <div class="problem-layout">
+      <div class="problem-left">
+        <h2 class="animate-on-scroll">
+          Sustainability stays at the <span>surface</span>
+        </h2>
+        <p class="problem-intro animate-on-scroll delay-1">
+          Nordic SMEs are indispensable sustainability actors, yet their efforts cluster around energy monitoring, compliance, and cost reduction. AI adoption reinforces this shallow orientation.
+        </p>
+        <div class="stat-row animate-on-scroll delay-2">
+          <div class="stat-block">
+            <div class="stat-number">99.9<span>%</span></div>
+            <div class="stat-label">of Nordic enterprises are SMEs</div>
+          </div>
+          <div class="stat-block">
+            <div class="stat-number">~40<span>%</span></div>
+            <div class="stat-label">of value-added in Sweden</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="problem-right">
+        <div class="problem-cards">
+          <div class="problem-card animate-on-scroll delay-1">
+            <div class="card-label">Pattern</div>
+            <p>AI-based solutions predominantly automate tasks, optimise operations, and reduce costs -- reinforcing parameter-level interventions.</p>
+          </div>
+          <div class="problem-card animate-on-scroll delay-2">
+            <div class="card-label">Consequence</div>
+            <p>Leaders are equipped for optimisation but the institutional environment demands transformation. A leverage gap emerges.</p>
+          </div>
+          <div class="problem-card animate-on-scroll delay-3">
+            <div class="card-label">Missing</div>
+            <p>No study examines whether leaders' imaginative capacities shape how they deploy AI for sustainability -- and at what systemic depth.</p>
+          </div>
+        </div>
+        <div class="problem-question animate-on-scroll delay-4">
+          <p>Can AI help sustainability leaders intervene beyond parameters -- at the deeper design and intent of our systems?</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 3 — THEORETICAL FRAMEWORK
+     ════════════════════════════════════════════ -->
+<section class="slide slide-framework" id="slide-2">
+  <div class="geo-grid"></div>
+  <div class="slide-inner">
+    <div class="slide-number">02 &mdash; Theoretical Framework</div>
+    <div class="framework-header">
+      <h2 class="animate-on-scroll">Three Pillars</h2>
+      <p class="animate-on-scroll delay-1">Converging theories that ground the investigation</p>
+    </div>
+
+    <div class="pillars">
+      <!-- Pillar 1: Leverage Points -->
+      <div class="pillar animate-on-scroll delay-1">
+        <div class="pillar-number">I</div>
+        <div class="pillar-icon">
+          <svg viewBox="0 0 40 40">
+            <circle cx="20" cy="20" r="16"/>
+            <circle cx="20" cy="20" r="10"/>
+            <circle cx="20" cy="20" r="4"/>
+          </svg>
+        </div>
+        <h3>Leverage Points</h3>
+        <div class="pillar-cite">Meadows, 1999; Abson et al., 2017</div>
+        <p>Twelve places to intervene in a system, condensed into four levels of increasing depth and transformative potential.</p>
+        <div class="pillar-levels">
+          <div class="level-item shallow">
+            <span style="min-width:70px">Parameters</span>
+            <div class="level-bar" style="width:90%; background: var(--text-light);"></div>
+          </div>
+          <div class="level-item shallow">
+            <span style="min-width:70px">Feedback</span>
+            <div class="level-bar" style="width:50%; background: var(--text-light);"></div>
+          </div>
+          <div class="level-item deep">
+            <span style="min-width:70px">Design</span>
+            <div class="level-bar" style="width:20%;"></div>
+          </div>
+          <div class="level-item deep">
+            <span style="min-width:70px">Intent</span>
+            <div class="level-bar" style="width:8%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pillar 2: Futures Consciousness -->
+      <div class="pillar animate-on-scroll delay-2">
+        <div class="pillar-number">II</div>
+        <div class="pillar-icon">
+          <svg viewBox="0 0 40 40">
+            <path d="M20 4 L36 20 L20 36 L4 20 Z"/>
+            <line x1="20" y1="12" x2="20" y2="28"/>
+            <line x1="12" y1="20" x2="28" y2="20"/>
+          </svg>
+        </div>
+        <h3>Futures Consciousness</h3>
+        <div class="pillar-cite">Ahvenharju et al., 2018; Lalot et al., 2020</div>
+        <p>A multidimensional psychological capacity comprising five measurable dimensions. Higher FC predicts sustainability engagement.</p>
+        <div class="pillar-tags">
+          <span class="pillar-tag">Time Perspective</span>
+          <span class="pillar-tag">Agency Beliefs</span>
+          <span class="pillar-tag">Openness</span>
+          <span class="pillar-tag">Systems Perception</span>
+          <span class="pillar-tag">Concern for Others</span>
+        </div>
+      </div>
+
+      <!-- Pillar 3: Complexity Leadership -->
+      <div class="pillar animate-on-scroll delay-3">
+        <div class="pillar-number">III</div>
+        <div class="pillar-icon">
+          <svg viewBox="0 0 40 40">
+            <path d="M8 32 Q20 8 32 32"/>
+            <circle cx="12" cy="28" r="3"/>
+            <circle cx="28" cy="28" r="3"/>
+            <circle cx="20" cy="12" r="3"/>
+          </svg>
+        </div>
+        <h3>Complexity Leadership</h3>
+        <div class="pillar-cite">Uhl-Bien & Arena, 2017</div>
+        <p>Administrative leadership manages existing structures. Enabling leadership creates conditions for adaptive responses to emerge.</p>
+        <div class="pillar-levels" style="margin-top:1.5rem;">
+          <div class="level-item">
+            <span style="min-width:90px; color: var(--text-light);">Administrative</span>
+            <span style="font-size:0.7rem; color: rgba(245,240,230,0.35);">AI for parameters</span>
+          </div>
+          <div class="level-item deep" style="margin-top:0.3rem;">
+            <span style="min-width:90px; color: var(--gold-light);">Enabling</span>
+            <span style="font-size:0.7rem; color: var(--gold); opacity:0.6;">AI for reimagining</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 4 — THE GAP
+     ════════════════════════════════════════════ -->
+<section class="slide slide-gap" id="slide-3">
+  <div class="geo-grid"></div>
+  <div class="slide-inner">
+    <div class="slide-number">03 &mdash; The Research Gap</div>
+    <div class="gap-header">
+      <h2 class="animate-on-scroll">Three Streams, One Missing Link</h2>
+    </div>
+
+    <div class="convergence-visual">
+      <div class="streams">
+        <div class="stream animate-on-scroll delay-1">
+          <div class="stream-icon">A</div>
+          <h3>AI Adoption in SMEs</h3>
+          <p>Environmental and organisational factors predict adoption, but outcomes measured only at parameter level.</p>
+          <div class="stream-cite">Badghish & Soomro, 2024; Neirotti et al., 2018</div>
+        </div>
+        <div class="stream animate-on-scroll delay-2">
+          <div class="stream-icon">B</div>
+          <h3>Futures Consciousness</h3>
+          <p>FC predicts engagement with future-oriented social behaviours, including pro-environmental and civic actions.</p>
+          <div class="stream-cite">Lalot et al., 2020, 2021</div>
+        </div>
+        <div class="stream animate-on-scroll delay-3">
+          <div class="stream-icon">C</div>
+          <h3>Deep Intervention</h3>
+          <p>Leveraging deeper system points requires bridging causal and teleological explanations -- engaging human intent.</p>
+          <div class="stream-cite">Fischer & Riechers, 2019; Riechers et al., 2022</div>
+        </div>
+      </div>
+
+      <div class="convergence-arrows animate-on-scroll delay-3">
+        <div class="arrow-line"></div>
+        <div class="arrow-line" style="transform: scaleX(-0.5);"></div>
+        <div class="convergence-center"></div>
+        <div class="arrow-line" style="transform: scaleX(-1);"></div>
+        <div class="arrow-line" style="transform: scaleX(0.5);"></div>
+      </div>
+
+      <div class="gap-box animate-on-scroll delay-4">
+        <div class="gap-label">Unexamined</div>
+        <p>Do leaders with stronger futures consciousness use AI differently? Does this difference manifest as interventions at deeper leverage points?</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 5 — CENTRAL PROPOSITION
+     ════════════════════════════════════════════ -->
+<section class="slide slide-proposition" id="slide-4">
+  <div class="slide-inner">
+    <div class="slide-number" style="color: var(--gold);">04 &mdash; Central Proposition</div>
+    <div class="proposition-content">
+      <div class="proposition-quote animate-on-scroll">
+        <span>Imagination</span> is the missing variable
+      </div>
+
+      <div class="mediation-model animate-on-scroll delay-2">
+        <div class="model-node primary">
+          <h4>AI Use</h4>
+          <p>Tool deployment patterns</p>
+        </div>
+        <div class="model-arrow">&rarr;</div>
+        <div class="model-node mediator">
+          <h4>Futures Consciousness</h4>
+          <p>Mediating variable</p>
+        </div>
+        <div class="model-arrow">&rarr;</div>
+        <div class="model-node outcome">
+          <h4>Leverage Depth</h4>
+          <p>Systemic intervention level</p>
+        </div>
+      </div>
+
+      <p class="proposition-explain animate-on-scroll delay-3">
+        If FC enables the cognitive capacity to imagine beyond efficiency, then AI tools that amplify this imagination could help leaders target deeper leverage points. The question shifts from <em>"What can AI do?"</em> to <em>"What does human imagination enable leaders to do with AI?"</em>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 6 — RESEARCH DESIGN
+     ════════════════════════════════════════════ -->
+<section class="slide slide-design" id="slide-5">
+  <div class="geo-grid"></div>
+  <div class="slide-inner">
+    <div class="slide-number">05 &mdash; Research Design</div>
+    <div class="design-header">
+      <h2 class="animate-on-scroll">Dual Perspective</h2>
+      <p class="animate-on-scroll delay-1">Qualitative depth meets quantitative breadth</p>
+    </div>
+
+    <div class="design-split animate-on-scroll delay-2">
+      <!-- Qualitative -->
+      <div class="design-panel qual">
+        <div class="panel-label">Qualitative</div>
+
+        <div class="rq-block">
+          <div class="rq-tag">RQ1</div>
+          <div class="rq-text">How do Nordic SME sustainability leaders use AI tools in envisioning and implementing deeper sustainability interventions?</div>
+        </div>
+        <div class="rq-block">
+          <div class="rq-tag">RQ2</div>
+          <div class="rq-text">What distinguishes imagination-AI interaction at deeper leverage points vs. parameter-level?</div>
+        </div>
+
+        <div class="method-detail">
+          <div class="method-row">
+            <span class="method-key">Method</span>
+            <span class="method-value">Multiple case study (4-6 Nordic SMEs)</span>
+          </div>
+          <div class="method-row">
+            <span class="method-key">Sampling</span>
+            <span class="method-value">Purposive, replication logic (deep vs. shallow)</span>
+          </div>
+          <div class="method-row">
+            <span class="method-key">Data</span>
+            <span class="method-value">Semi-structured interviews + document analysis</span>
+          </div>
+          <div class="method-row">
+            <span class="method-key">Analysis</span>
+            <span class="method-value">Thematic analysis (Braun & Clarke, 2006) -- deductive + inductive coding</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="design-divider">
+        <span>Dual</span>
+      </div>
+
+      <!-- Quantitative -->
+      <div class="design-panel quant">
+        <div class="panel-label">Quantitative</div>
+
+        <div class="rq-block">
+          <div class="rq-tag">RQ3</div>
+          <div class="rq-text">Are FC and AI use leverage depth associated with initiative leverage depth, controlling for firm size, sector, and country?</div>
+        </div>
+        <div class="rq-block">
+          <div class="rq-tag">RQ4</div>
+          <div class="rq-text">Which FC dimensions show the strongest associations? Does the FC + deep AI combination explain additional variance?</div>
+        </div>
+
+        <div class="method-detail">
+          <div class="method-row">
+            <span class="method-key">Method</span>
+            <span class="method-value">Cross-sectional online survey (n = 100-150)</span>
+          </div>
+          <div class="method-row">
+            <span class="method-key">Target</span>
+            <span class="method-value">Sustainability managers in Nordic SMEs</span>
+          </div>
+          <div class="method-row">
+            <span class="method-key">Instrument</span>
+            <span class="method-value">Validated 20-item FC Scale (Lalot et al., 2020) + vignettes</span>
+          </div>
+          <div class="method-row">
+            <span class="method-key">Analysis</span>
+            <span class="method-value">Hierarchical regression, correlation analysis</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 7 — TIMELINE
+     ════════════════════════════════════════════ -->
+<section class="slide slide-timeline" id="slide-6">
+  <div class="slide-inner">
+    <div class="slide-number" style="color: var(--gold);">06 &mdash; Research Plan</div>
+    <div class="timeline-header">
+      <h2 class="animate-on-scroll">10-Week Timeline</h2>
+    </div>
+
+    <div class="timeline-track">
+      <div class="timeline-phase animate-on-scroll">
+        <div class="phase-header">
+          <span class="phase-weeks">Weeks 1-2</span>
+          <span class="phase-title">Literature Review & Instrument Design</span>
+        </div>
+        <div class="phase-bar"><div class="phase-bar-fill" style="width: 20%;"></div></div>
+        <p class="phase-desc">Systematic review, interview guide development, survey instrument preparation</p>
+      </div>
+
+      <div class="timeline-phase animate-on-scroll delay-1">
+        <div class="phase-header">
+          <span class="phase-weeks">Weeks 2-3</span>
+          <span class="phase-title">Case Recruitment & Pilot Survey</span>
+        </div>
+        <div class="phase-bar"><div class="phase-bar-fill" style="width: 15%;"></div></div>
+        <p class="phase-desc">Purposive case selection, cognitive pilot interviews (n = 5-8) for measurement validity</p>
+      </div>
+
+      <div class="timeline-phase animate-on-scroll delay-2">
+        <div class="phase-header">
+          <span class="phase-weeks">Weeks 4-7</span>
+          <span class="phase-title">Data Collection</span>
+        </div>
+        <div class="phase-bar"><div class="phase-bar-fill" style="width: 40%;"></div></div>
+        <p class="phase-desc">Semi-structured interviews with case study SMEs; survey distribution across Nordic region</p>
+      </div>
+
+      <div class="timeline-phase animate-on-scroll delay-3">
+        <div class="phase-header">
+          <span class="phase-weeks">Weeks 7-8</span>
+          <span class="phase-title">Analysis</span>
+        </div>
+        <div class="phase-bar"><div class="phase-bar-fill" style="width: 15%;"></div></div>
+        <p class="phase-desc">Thematic analysis with deductive/inductive coding; hierarchical regression analysis</p>
+      </div>
+
+      <div class="timeline-phase animate-on-scroll delay-4">
+        <div class="phase-header">
+          <span class="phase-weeks">Weeks 8-10</span>
+          <span class="phase-title">Writing, Revision & Submission</span>
+        </div>
+        <div class="phase-bar"><div class="phase-bar-fill" style="width: 30%;"></div></div>
+        <p class="phase-desc">Manuscript drafting, peer review, final revisions, and submission</p>
+      </div>
+    </div>
+
+    <div class="timeline-ethics animate-on-scroll delay-5">
+      <div class="ethics-label">Ethical Considerations</div>
+      <p>Swedish Research Council guidelines (Vetenskapsradet, 2017): informed consent, pseudonymised recordings, anonymous surveys, encrypted university data storage.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 8 — PRACTICAL CONTRIBUTION
+     ════════════════════════════════════════════ -->
+<section class="slide slide-contribution" id="slide-7">
+  <div class="geo-grid"></div>
+  <div class="slide-inner">
+    <div class="slide-number">07 &mdash; Practical Contribution</div>
+    <div class="contribution-header">
+      <h2 class="animate-on-scroll">Who Benefits</h2>
+    </div>
+
+    <div class="audiences">
+      <div class="audience animate-on-scroll delay-1">
+        <span class="audience-icon" aria-hidden="true" style="color: var(--gold);">&#9670;</span>
+        <h3>SME Leaders</h3>
+        <p>Concrete models of how leaders combine imagination with AI. Clarity on which FC dimensions enable deeper intervention.</p>
+        <div class="shift-quote">
+          From "Does this tool improve performance?" to "Is this tool helping me imagine and redesign?"
+        </div>
+      </div>
+
+      <div class="audience animate-on-scroll delay-2">
+        <span class="audience-icon" aria-hidden="true" style="color: var(--gold);">&#9671;</span>
+        <h3>Policymakers</h3>
+        <p>Conditions under which AI becomes a tool for transformation rather than optimisation. Direct implications for sustainability training, AI adoption guidance, and innovation support.</p>
+      </div>
+
+      <div class="audience animate-on-scroll delay-3">
+        <span class="audience-icon" aria-hidden="true" style="color: var(--gold);">&#9674;</span>
+        <h3>Researchers</h3>
+        <p>Moves leverage points from diagnosing where interventions land to understanding what enables leaders to go deeper. Bridges futures consciousness with technology adoption literature.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════
+     SLIDE 9 — THE REFRAME / CLOSING
+     ════════════════════════════════════════════ -->
+<section class="slide slide-closing" id="slide-8">
+  <div class="closing-bg">
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+    <div class="ring"></div>
+  </div>
+  <div class="slide-inner">
+    <div class="closing-content">
+      <div class="slide-number" style="text-align:center;">08 &mdash; The Reframe</div>
+
+      <div class="closing-quote animate-on-scroll">
+        The question is not what AI tools can do, but what <em>human imagination</em> enables leaders to do with them.
+      </div>
+
+      <div class="sdg-row animate-on-scroll delay-2">
+        <div class="sdg-badge">
+          <span class="sdg-num">9</span>
+          <span class="sdg-text">Industry, Innovation<br>& Infrastructure</span>
+        </div>
+        <div class="sdg-badge">
+          <span class="sdg-num">4</span>
+          <span class="sdg-text">Quality<br>Education</span>
+        </div>
+      </div>
+
+      <div class="closing-separator"></div>
+
+      <div class="closing-meta animate-on-scroll delay-3">
+        <strong>Maria Cecilia Espina</strong><br>
+        SALSU Programme &middot; Malm&ouml; University<br>
+        OL652E Research Methods &middot; VT26
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // ─── Scroll-based animations ───
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.15 });
+
+  document.querySelectorAll('.animate-on-scroll').forEach(el => observer.observe(el));
+
+  // ─── Navigation dots ───
+  const slides = document.querySelectorAll('.slide');
+  const dots = document.querySelectorAll('.nav-dot');
+
+  const slideObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const idx = Array.from(slides).indexOf(entry.target);
+        dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      }
+    });
+  }, { threshold: 0.5 });
+
+  slides.forEach(s => slideObserver.observe(s));
+
+  dots.forEach(dot => {
+    dot.addEventListener('click', () => {
+      const idx = parseInt(dot.dataset.slide);
+      slides[idx].scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  // ─── Keyboard navigation ───
+  let currentSlide = 0;
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowRight' || e.key === ' ') {
+      e.preventDefault();
+      currentSlide = Math.min(currentSlide + 1, slides.length - 1);
+      slides[currentSlide].scrollIntoView({ behavior: 'smooth' });
+    } else if (e.key === 'ArrowUp' || e.key === 'ArrowLeft') {
+      e.preventDefault();
+      currentSlide = Math.max(currentSlide - 1, 0);
+      slides[currentSlide].scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+
+  // Sync keyboard tracking with scroll
+  const keySlideObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        currentSlide = Array.from(slides).indexOf(entry.target);
+      }
+    });
+  }, { threshold: 0.5 });
+
+  slides.forEach(s => keySlideObserver.observe(s));
+
+  // ─── Hide key hint after first scroll ───
+  const hint = document.querySelector('.key-hint');
+  let hintHidden = false;
+  window.addEventListener('scroll', () => {
+    if (!hintHidden && window.scrollY > 100) {
+      hint.style.opacity = '0';
+      hint.style.transition = 'opacity 0.5s ease';
+      hintHidden = true;
+    }
+  });
+</script>
+
+</body>
+</html>
