@@ -847,10 +847,10 @@
     .title-block h1 { font-size: 2rem; }
     .problem-chain,
     .problem-resolution,
-    .theory-grid { grid-template-columns: 1fr; gap: 12px; }
+    .theory-grid { grid-template-columns: 1fr; gap: 16px; }
     .problem-chain .arrow-right,
     .problem-resolution .arrow-right,
-    .theory-grid .arrow-right { transform: rotate(90deg); }
+    .theory-grid .arrow-right { transform: rotate(90deg); padding: 4px 0; }
     .problem-chain > .p-card,
     .problem-chain > .arrow-right { grid-row: auto; }
     .lp-tower { grid-column: auto; grid-row: auto; }
@@ -883,7 +883,11 @@
     .title-block h1 { font-size: 1.6rem; }
     .title-block .subtitle { font-size: 0.9rem; }
 
-    .problem-chain { gap: 0 6px; margin-bottom: 28px; }
+    .problem-chain { gap: 8px 6px; margin-bottom: 28px; }
+    .problem-chain .arrow-right,
+    .problem-resolution .arrow-right,
+    .theory-grid .arrow-right { padding: 8px 0; }
+    .arrow-right { padding: 6px 0; }
     .p-card { padding: 14px 12px; }
     .p-card h3 { font-size: 0.8rem; }
     .small { font-size: 0.68rem; }
