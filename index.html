@@ -722,6 +722,62 @@
   }
   .gate p { font-size: 0.68rem; color: var(--ink-light); line-height: 1.5; }
 
+  /* ─── Typing quote ─── */
+  .typing-quote {
+    text-align: center;
+    padding: 36px 32px;
+    margin-bottom: 44px;
+  }
+  .typing-quote .tq-label {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--rose-muted);
+    margin-bottom: 12px;
+  }
+  .typing-quote .tq-line {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 1.15rem;
+    font-style: italic;
+    color: var(--ink-light);
+    line-height: 1.7;
+    overflow: hidden;
+    white-space: nowrap;
+    display: inline-block;
+    border-right: 2px solid var(--rose-muted);
+    max-width: 0;
+    opacity: 0;
+    vertical-align: bottom;
+  }
+  .typing-quote .tq-line.typing {
+    opacity: 1;
+    animation: type-expand 2.5s steps(50, end) forwards,
+               blink-caret 0.6s step-end infinite;
+  }
+  .typing-quote .tq-line.done {
+    border-color: transparent;
+    opacity: 1;
+  }
+  .typing-quote .tq-em {
+    color: var(--ink);
+    font-weight: 600;
+    font-style: italic;
+  }
+  .typing-quote .tq-row {
+    display: block;
+    min-height: 1.8em;
+  }
+  @keyframes type-expand {
+    from { max-width: 0; }
+    to { max-width: 100%; }
+  }
+  @keyframes blink-caret {
+    from, to { border-color: var(--rose-muted); }
+    50% { border-color: transparent; }
+  }
+
   /* ─── CTA / Proposal link ─── */
   .cta-section {
     text-align: center;
@@ -859,6 +915,12 @@
           <span class="lever-cta-label">Explore all 12 leverage points &rarr;</span>
         </div>
       </a>
+    </div>
+
+    <div class="typing-quote" id="typing-quote">
+      <div class="tq-label">Reframing</div>
+      <span class="tq-row"><span class="tq-line" data-delay="300">The question is not <span class="tq-em">what AI tools can do</span></span></span><br>
+      <span class="tq-row"><span class="tq-line" data-delay="3200">but <span class="tq-em">what human imagination enables leaders to do with them</span></span></span>
     </div>
 
     <div class="problem-resolution">
@@ -1227,5 +1289,43 @@
 
 </div>
 
+<script>
+(function() {
+  var triggered = false;
+  var quote = document.getElementById('typing-quote');
+  if (!quote) return;
+
+  var lines = quote.querySelectorAll('.tq-line');
+
+  function startTyping() {
+    if (triggered) return;
+    triggered = true;
+
+    lines.forEach(function(line) {
+      var delay = parseInt(line.getAttribute('data-delay'), 10) || 0;
+      setTimeout(function() {
+        line.classList.add('typing');
+        // Remove caret after animation
+        setTimeout(function() {
+          line.classList.remove('typing');
+          line.classList.add('done');
+          line.style.maxWidth = '100%';
+        }, 2600);
+      }, delay);
+    });
+  }
+
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) {
+      if (entry.isIntersecting) {
+        startTyping();
+        observer.disconnect();
+      }
+    });
+  }, { threshold: 0.5 });
+
+  observer.observe(quote);
+})();
+</script>
 </body>
 </html>
