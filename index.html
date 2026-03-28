@@ -869,6 +869,78 @@
     .sdg-row { grid-template-columns: 1fr; }
     .fc-dim.span-2 { grid-column: span 1; }
   }
+
+  @media (max-width: 480px) {
+    .canvas { padding: 24px 14px 48px; }
+    .zone { padding: 24px 16px; margin-bottom: 32px; }
+    .zone-heading { font-size: 0.75rem; letter-spacing: 0.08em; margin-bottom: 28px; flex-wrap: wrap; }
+
+    .title-block { margin-bottom: 40px; }
+    .title-block h1 { font-size: 1.6rem; }
+    .title-block .subtitle { font-size: 0.9rem; }
+
+    .problem-chain { gap: 0 6px; margin-bottom: 28px; }
+    .p-card { padding: 14px 12px; }
+    .p-card h3 { font-size: 0.8rem; }
+    .small { font-size: 0.68rem; }
+    .arrow-right { font-size: 0.9rem; }
+
+    .lp-tower { padding: 14px 12px; }
+    .lp-level { padding: 6px 8px; font-size: 0.65rem; }
+
+    .typing-quote-inline { padding: 16px 8px; }
+    .typing-quote-inline .tq-line {
+      font-size: 0.85rem;
+      white-space: normal;
+      overflow: visible;
+      max-width: 100% !important;
+      opacity: 1;
+      border-right: none;
+      animation: none !important;
+    }
+    .typing-quote-inline .tq-line.typing,
+    .typing-quote-inline .tq-line.done {
+      border-color: transparent;
+    }
+
+    .gap-card, .star-card, .rq-card { padding: 16px 14px; }
+    .cl-card { max-width: 100%; padding: 16px 14px; }
+
+    .construct { padding: 18px 16px; }
+    .fc-dim { padding: 10px 12px; }
+    .lit-map { padding: 20px 16px; }
+    .lit-grid { grid-template-columns: 1fr; }
+    .lit-card { padding: 12px 14px; }
+    .lit-legend { gap: 12px; }
+
+    .method-lane { padding: 20px 16px; }
+    .lane-header { flex-direction: column; gap: 4px; margin-bottom: 18px; }
+    .steps-grid { grid-template-columns: 1fr; }
+    .step { padding: 14px 14px; }
+    .rq-text { padding: 12px 14px; font-size: 0.7rem; }
+
+    .convergence { gap: 12px; }
+    .converge-node { padding: 16px 14px; }
+    .shared-box { padding: 16px 14px; }
+    .contrib-grid { gap: 12px; }
+    .contrib-card { padding: 16px 14px; }
+    .reframe { padding: 24px 20px; }
+
+    .phases-grid { grid-template-columns: 1fr; gap: 10px; }
+    .phase { padding: 16px 14px; }
+    .partners-grid { gap: 12px; }
+    .partner { padding: 16px 14px; }
+
+    .gates-grid { grid-template-columns: 1fr; gap: 10px; }
+    .gate { padding: 16px 14px; }
+
+    .cta-section { padding: 32px 16px; }
+    .cta-btn { padding: 14px 24px; font-size: 0.95rem; display: block; }
+    .cta-meta { font-size: 0.62rem; }
+
+    .hyp-box { padding: 12px 14px; }
+    .controls-pill { padding: 6px 12px; font-size: 0.62rem; }
+  }
 </style>
 </head>
 <body>
